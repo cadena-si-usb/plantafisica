@@ -1,0 +1,133 @@
+{{extend 'layout.html'}}
+
+{{block content}}
+<style> 
+requerimiento {
+    width: 10em;
+    border: 0px solid #000000;
+    word-wrap: break-word;
+}
+</style>
+            <div class="container-fluid">
+                <div class="row">
+                   <div class="col-lg-12 rounded_border" >
+                        <div class="rounded2" >
+                            <center>
+                                <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3>Buscar Solicitud</h3>
+                                            <hr WIDTH="30%">
+                                            <br>
+                                        </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div id="buscador" class="center">
+                                        <form class="form-inline form-inline-search" role="form">
+                                            <div class="form-group form-inline-search-item">
+                                                <input class="form-control" id="usr" placeholder="Ingrese el ID de Solicitud" type="text" onkeypress="return validar_texto(event)">
+                                            </div>
+                                            <a type="submit" class="notif_link_but"  role="button" href="#" onclick="getOption()">
+                                                <h5 class="fa fa-search fa-lg yellow"></h5>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </div>
+                           </center>
+
+                            <script>
+                                function getOption() {
+                                    var busqueda = document.getElementById("usr").value;
+                                    busqueda = busqueda.replace('#','');
+                                    var id = ('/{{=request.application}}/{{=request.controller}}/buscador/'+busqueda);
+                                    window.location.replace(id);
+                                }
+
+                                function validar_texto(e){
+                                    tecla = (document.all) ? e.keyCode : e.which;
+                                    //Tecla de retroceso para borrar, siempre la permite
+                                    if (tecla==8){
+                                        return true;
+                                    }
+                                    // Patron de entrada, en este caso solo acepta numeros
+                                    patron =/[#0-9]/;
+                                    tecla_final = String.fromCharCode(tecla);
+                                    return patron.test(tecla_final);
+                                }
+                            </script>
+                           <br>
+                           <div class="row">
+                            {{ if (solicitud != None): }}
+                                <div class="row">
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Prioridad:</label>
+                                            <p class="form-control-static col-sm-7"> {{=solicitud.prioridad}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Fecha:</label>
+                                            <p class="form-control-static col-sm-7"> {{=solicitud.fecha_realizacion}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Area:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.area.nombre_area}}</p>
+                                        </div>
+                                   </div>
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Tipo:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.tipo}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Unidad:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.unidad.nombre_unidad}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Contacto:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.info_contacto}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Edificio::</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.edificio.nombre_edificio}}</p>
+                                        </div>
+                                   </div>
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Espacio:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.espacio.espacio}}</p>
+                                        </div>
+                                   </div>
+                                   {{ if (solicitud.telefono!= None): }}
+                                       <div class="form-group">
+                                             <div class="row">
+                                                <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Teléfono:</label>
+                                                <p class="form-control-static col-sm-7">{{=solicitud.telefono}}</p>
+                                            </div>
+                                       </div>
+                                   {{pass}}
+                                    {{ if (solicitud.requerimiento != ""): }}
+                                       <div class="form-group">
+                                             <div class="row">
+                                                <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Requerimiento:</label>
+                                                <p class="form-control-static col-sm-7 requerimiento">{{=solicitud.requerimiento}}</p>
+                                            </div>
+                                       </div>
+                                   {{pass}}
+                                </div>
+                            {{ pass }}
+                          </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+{{end}}

@@ -1,0 +1,8 @@
+{{if (not myNotif['Mantenimiento']):}}
+                    <center><a href="http://www.google.com"><div class="alert-box notification_list warning "><span><i class="fa fa-exclamation">No existen notificaciones recientes para esta categoría.</i></span></div></a>
+                </center>
+                {{else:}}{{pass}}
+                <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                {{ for x in myNotif['Mantenimiento']: }}
+                    <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                {{pass}}

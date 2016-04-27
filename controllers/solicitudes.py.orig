@@ -1,0 +1,194 @@
+# -*- coding: utf-8 -*-
+
+#from reportlab.platypus import *
+#from reportlab.lib.units import cm
+#from reportlab.lib import colors
+#from uuid import uuid4
+import os
+from gluon.tools import Crud, Mail
+<<<<<<< HEAD
+from notificaciones import send_mail
+=======
+from notificaciones import send_mail, appendToDbSol
+
+>>>>>>> 00edbbcf955f3769ddbdbb1898a28eea0d3cd460
+crud = Crud(db)
+
+mail = Mail()
+mail.settings.server = 'smtp.gmail.com:587'
+mail.settings.sender = 'cybertechsolts@gmail.com'
+mail.settings.login = 'cybertechsolts@gmail.com:perreoperreo'
+
+def index():
+    redirect(URL('listar'))
+    return locals()
+
+def agregar():
+    form = SQLFORM( db.Solicitud, fields=['area', 'tipo', 'unidad', 'info_contacto',
+                                          'edificio','espacio', 'telefono', 'requerimiento',
+                                          'observacion_solicitud'] )
+    form.element(_id='submit_record__row')['_class'] += " text-center"
+    form.element(_type='submit')['_class']="btn form_submit"
+    form.element(_type='submit')['_value']="Crear"
+
+    if form.process().accepted:
+        print('WORKING EN SOLICITUDES')
+        print request.vars['info_contacto']
+        #######################################################################
+        #################### ENVIO DEL CORREO DE SOLICITUD ####################
+        idSol = db(db.Solicitud).select(db.Solicitud.ALL).as_list()[-1]['id']
+        correo = request.vars.info_contacto
+        send_mail('benjamin', idSol, correo)
+        #######################################################################
+        ############ INGRESA LA NOTIFICACION DE LA SOLICITUD ##################
+        #######################################################################
+        dept = request.vars.tipo
+        appendToDbSol(idSol, dept)
+        idNotif = db(db.Notificacion).select(db.Solicitud.id).as_list()[-1]['id']
+        print(idNotif)
+        db.Notificacion_Solicitud.insert(id_sol=idSol, id_notif=idNotif)
+        #######################################################################
+
+        session.flash = T('Solicitud creada exitosamente')
+        redirect(URL('listar'))
+    elif form.errors:
+        response.flash = T('Solicitud tiene errores, por favor verifique todos los campos.')
+    else:
+        response.flash = T('Por favor llene la forma.')
+    return locals()
+
+def listar():
+    filas = db(db.Solicitud).select(orderby=db.Solicitud.prioridad)
+    return locals()
+
+def modificar():
+    form = crud.update(db.Solicitud, request.args(0))
+
+    ################ DEJAR DE ESTO SOLO LO QUE NECESITA NOTIFICACIONES ######################
+    solicitudAnt = db(db.Solicitud.id == request.args(0)).select()[0]['status']
+    solicitud = crud.update(db.Solicitud, request.args(0))
+    #######################################################################
+    solicitudAct = db(db.Solicitud.id == request.args(0)).select()[0]
+    if (solicitudAnt != solicitudAct['status']):
+        idSol = solicitudAct['id']
+        correo = solicitudAct['info_contacto']
+        estado = solicitudAct['status']
+        send_mail('benjamin', idSol, correo, estado)
+    #######################################################################
+    return locals()
+
+'''def get_pdf():
+    solicitud = db.Solicitud(request.args(0))
+    tmpfilename=os.path.join(request.folder,'private',str(uuid4()))
+    doc = SimpleDocTemplate(tmpfilename)
+    elements = []
+    data = [['UNIVERSIDAD SIMÓN BOLÍVAR\nVICERRECTORADO ADMINISTRATIVO\nDIRECCIÓN DE PLANTA FÍSICA\nUnidad de Atención e Inspección', '' , 'SOLICITUD DE SERVICIO DE LA DIRECCIÓN PLANTA FÍSICA', '', '', ''],
+            [''],
+            ['Fecha de Solicitud:\n' + str(solicitud.fecha_realizacion), '', 'Área de Trabajo:\n' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI:\n' + str(solicitud.id), ''],
+            [solicitud.tipo, '', '', 'Entregada a:', '', ''],
+            ['Unidad Solicitante', '', '', 'Persona de Contacto', '', ''],
+            [solicitud.unidad.nombre_unidad, '', '', solicitud.info_contacto, '', ''],
+            ['Edificio', 'Espacio', 'Telefono', 'Requerimiento', '', ''],
+            [solicitud.edificio.nombre_edificio, solicitud.espacio.espacio, solicitud.telefono, solicitud.requerimiento, '', ''],
+            ['Observaciones', '', '', '', 'Firma y Sello,\nUnidad de Atención e Inspección', ''],
+            [solicitud.observacion_solicitud, '', '', '', '', ''],
+            ['Ejecución', '', '', '', '', ''],
+            ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
+            [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
+            ['Trabajadores Asignados', '', '', '', '', ''],
+            [solicitud.trabajador[0], '', '', '', '', ''],
+            [solicitud.trabajador[1], '', '', '', '', ''],
+            [solicitud.trabajador[2], '', '', '', '', ''],
+            [''],
+            ['Observaciones', '', '', '', 'Trabajo Terminado', ''],
+            [solicitud.observacion_ejecucion, '', '', '', '', ''],
+            [''],
+            ['Cantidad', 'Materiales Requeridos/\nSolicitud de Almacén', '', 'Si/No', 'Material Retirado por:', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+           ]
+    t=Table(data, 3*cm)
+    t.setStyle(TableStyle([('SPAN', (0,0), (1,0)),
+                           ('SPAN', (2,0), (5,0)),
+                           ('FONTSIZE', (0,0), (0,0), 9),
+                           ('GRID', (0,2), (5,9), 0.25, colors.black),
+                           ('SPAN', (0,2), (1,2)),
+                           ('SPAN', (2,2), (3,2)),
+                           ('SPAN', (4,2), (5,2)),
+                           ('SPAN', (0,3), (2,3)),
+                           ('SPAN', (3,3), (5,3)),
+                           ('SPAN', (0,4), (2,4)),
+                           ('SPAN', (3,4), (5,4)),
+                           ('SPAN', (0,5), (2,5)),
+                           ('SPAN', (3,5), (5,5)),
+                           ('SPAN', (3,6), (5,6)),
+                           ('SPAN', (3,7), (5,7)),
+                           ('SPAN', (0,8), (3,8)),
+                           ('SPAN', (4,8), (5,8)),
+                           ('SPAN', (0,9), (3,9)),
+                           ('SPAN', (4,9), (5,9)),
+                           ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                           ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+                           ('ALIGN', (3,3), (3,3), 'LEFT'),
+                           ('FONTSIZE', (0,4), (3,4), 12),
+                           ('FONTSIZE', (0,6), (3,6), 12),
+                           ('FONTSIZE', (0,8), (0,8), 14),
+                           ('FONTSIZE', (0,10), (0,10), 12),
+                           ('GRID', (0,11), (5,12), 0.25, colors.black),
+                           ('SPAN', (0,11), (1,11)),
+                           ('SPAN', (2,11), (3,11)),
+                           ('SPAN', (4,11), (5,11)),
+                           ('SPAN', (0,12), (1,12)),
+                           ('SPAN', (2,12), (3,12)),
+                           ('SPAN', (4,12), (5,12)),
+                           ('FONTSIZE', (0,11), (0,11), 12),
+                           ('ALIGN', (0,13), (0,13), 'LEFT'),
+                           ('ALIGN', (0,10), (0,10), 'LEFT'),
+                           ('GRID', (0,14), (5,16), 0.25, colors.black),
+                           ('SPAN', (0,14), (5,14)),
+                           ('SPAN', (0,15), (5,15)),
+                           ('SPAN', (0,16), (5,16)),
+                           ('ALIGN', (0,14), (0,16), 'LEFT'),
+                           ('GRID', (0,18), (5,19), 0.25, colors.black),
+                           ('SPAN', (0,18), (3,18)),
+                           ('SPAN', (4,18), (5,18)),
+                           ('SPAN', (0,19), (3,19)),
+                           ('SPAN', (4,19), (5,19)),
+                           ('GRID', (0,21), (-1,-1), 0.25, colors.black),
+                           ('SPAN', (1,21), (2,21)),
+                           ('SPAN', (4,21), (5,21)),
+                           ('SPAN', (1,22), (2,22)),
+                           ('SPAN', (4,22), (5,22)),
+                           ('SPAN', (1,23), (2,23)),
+                           ('SPAN', (4,23), (5,23)),
+                           ('SPAN', (1,24), (2,24)),
+                           ('SPAN', (4,24), (5,24)),
+                           ('SPAN', (1,25), (2,25)),
+                           ('SPAN', (4,25), (5,25)),
+                           ('SPAN', (1,26), (2,26)),
+                           ('SPAN', (4,26), (5,26))
+                          ]))
+    t._rowHeights[9] = 2.5 * cm
+    t._rowHeights[19] = 2.5 * cm
+    elements.append(t)
+    doc.build(elements)
+    data = open(tmpfilename,"rb").read()
+    os.unlink(tmpfilename)
+    response.headers['Content-Type']='application/pdf'
+    return data'''
+
+def historial():
+    filas = db(db.Solicitud).select(orderby=db.Solicitud.id)
+    return locals()
+    
+def buscador():
+    solicitud = None;
+    if (request.args(0) != None):
+        if (db(db.Solicitud.id==request.args(0)).select()):
+            solicitud = db(db.Solicitud.id==request.args(0)).select().first()
+        else:
+            response.flash = T('No se encontro ninguna solicitud con ese ID')
+    return locals()

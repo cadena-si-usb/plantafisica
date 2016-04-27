@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html class="no-js" lang="{{=T.accepted_language or 'en'}}"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <!-- www.phpied.com/conditional-comments-block-downloads/ -->
+    <!-- Always force latest IE rendering engine
+         (even in intranet) & Chrome Frame
+         Remove this if you use the .htaccess -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge{{=not request.is_local and ',chrome=1' or ''}}">
+    <!--  Mobile Viewport Fix
+          j.mp/mobileviewport & davidbcalhoun.com/2010/viewport-metatag
+          device-width: Occupy full width of the screen in its current orientation
+          initial-scale = 1.0 retains dimensions instead of zooming out if page height > device height
+          user-scalable = yes allows the user to zoom in -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{=response.title or request.application}}</title>
+    <!-- http://dev.w3.org/html5/markup/meta.name.html -->
+    <meta name="application-name" content="{{=request.application}}">
+    <!-- Speaking of Google, don't forget to set your site up:
+         http://google.com/webmasters -->
+    <meta name="google-site-verification" content="">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="{{=URL('static','css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="{{=URL('static','css/web2py-bootstrap3.css')}}"/> -->
+
+    <!-- Custom CSS -->
+    <link href="{{=URL('static','css/simple-sidebar.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','css/requestTable.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','css/tabsMenu.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','css/font-awesome.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','css/searchBox.css')}}" rel="stylesheet">
+    <link href="{{=URL('static','css/datepicker.css')}}" rel="stylesheet">
+
+    <!-- Custom DataTables plugin -->
+    <link rel="stylesheet" type="text/css" href="{{=URL('static','DataTables/datatables.css')}}">
+
+        <!-- http://dev.w3.org/html5/markup/meta.name.html -->
+        <meta name="application-name" content="{{=request.application}}">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- Favicons -->
+{{include 'web2py_ajax.html'}} <!-- this includes jquery.js, calendar.js/.css and web2py.js -->
+{{block head}}{{end head}}
+</head>
+
+
+<body>
+
+
+<div id="myHeader" class="navbar navbar-default navbar-fixed-top">
+    <div id="nmyHeader" class="navbar-header">
+        <img src="{{=URL('static','images/bannersiages.png')}}" class="banner" id="bigB">
+
+        <div class="row" id="smallB"  style="display: none">
+                <center><img src="{{=URL('static','images/bannerS.png')}}" class="banner" z-index=9999 height="50%"
+                ></center>
+                <a onclick="toggleSidebar()" id="myMenu" class="btn btn-default menuButton" style="background-color: #EEE;">
+                    <img src="{{=URL('static','images/menu.jpg')}}" width="30px"/>
+                </a>
+        </div>
+    </div>
+</div>
+
+<div id="PageSpace" class="PageSpace">
+</div>
+
+<div id="wrapper">
+{{include}}
+    <!-- Sidebar -->
+    <div id="sidebar-wrapper">
+
+    {{if response.menu:}}
+          {{=MENU(response.menu, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+          {{pass}}
+    </div>
+    <!--        <div id="page-content-user" style="visibility: hidden;">
+            <ul class="nav navbar-nav navbar-right" style="display:hidden">
+                {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
+            </ul>
+        </div> -->
+
+    <div id="page-content-wrapper">
+        <div class="w2p_flash alert alert-dismissable">{{=response.flash or ''}}</div>
+    {{block content}}
+            {{end content}}
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+<!-- The javascript =============================== -->
+
+<!-- jQuery -->
+<script src="{{=URL('static','js/jquery.js')}}"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="{{=URL('static','js/bootstrap.min.js')}}"></script>
+<script src="{{=URL('static','js/bootstrap-datepicker.js')}}"></script>
+
+<!-- Menu Toggle Script -->
+
+<script>
+    $("#menu-toggle").click(function (e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
+
+<!-- The javascript =============================== -->
+<script src="{{=URL('static','js/web2py-bootstrap3.js')}}"></script>
+<script src="{{=URL('static','DataTables/datatables.js')}}"></script>
+
+
+<script>
+    $(function () {
+        var $header = $('#myHeader');
+        var $content = $('#PageSpace');
+        var $window = $(window);
+        var $img2 = $('#bigB');
+        var $img4 = $('#smallB');
+        var $window = $(window).on('resize', function () {
+            var height = $header.height();
+            $content.height(height);
+            if ($window.width() < 1120) {
+                $img2.css('z-index', -1);
+                $img4.css('z-index', 1000);
+                $img2.hide()
+                $img4.fadeIn()
+            } else if ($window.width() > 1120) {
+                $img2.css('z-index', 1000);
+                $img4.css('z-index', -1);
+                $img4.hide()
+                $img2.fadeIn()
+            }
+        }).trigger('resize'); //on page load
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(window).resize(); //on page load
+        $('a#myMenu').click(function(){
+            $('#wrapper').toggleClass("toggled");
+        });
+    });
+</script>
+
+{{block page_js}}{{end page_js}}
+{{if response.google_analytics_id:}}
+<!-- Analytics ==================================== -->
+<script src="{{=URL('static','js/analytics.min.js')}}"></script>
+<script type="text/javascript">
+    analytics.initialize({
+        'Google Analytics': {trackingId: '{{=response.google_analytics_id}}'}
+    });
+</script>
+
+<!--//                        $('.PageSpace').height('5px'); -->
+{{pass}}
+
+</body>
+
+</html>

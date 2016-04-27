@@ -1,0 +1,110 @@
+{{extend 'layout.html'}}
+
+{{ block head }}
+<!-- Custom DataTables plugin -->
+<link rel="stylesheet" type="text/css" href="{{=URL('static','DataTables/datatables.css')}}">
+{{ end }}
+
+{{block page_js}}
+<!-- Custom DataTables plugin -->
+<script src="{{=URL('static','DataTables/datatables.js')}}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabla_solicitudes').DataTable( {
+            "columns": [
+                null,
+                null,
+                { "orderable": false },
+                null,
+                { "orderable": false },
+                { "orderable": false }
+            ],
+            responsive: true,
+            "language": {
+                search:         "Buscar:",
+                searchPlaceholder: "",
+                lengthMenu:     "Mostrar _MENU_ entradas",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ entradas.",
+                infoEmpty:      "Mostrando 0 a 0 de 0 entradas",
+                infoFiltered:   "(filtradas de _MAX_ entradas en total)",
+                infoPostFix:    "",
+                loadingRecords: "Carga en curso...",
+                zeroRecords:    "No se encontraron solicitudes que concuerden con su busqueda",
+                emptyTable:     "No hay informacion disponible en la tabla",
+                processing:     "Procesando...",
+                paginate: {
+                    first:      "Primero",
+                    previous:   "Anterior",
+                    next:       "Siguiente",
+                    last:       "Ultimo"
+                },
+                aria: {
+                    sortAscending:  ": Se ordenan las columnas por orden creciente",
+                    sortDescending: ": Se ordenan las columnas por orden decreciente"
+                }
+            }
+        } );
+    } );
+</script>
+{{end page_js}}
+
+{{block content}}
+
+<!-- Page Content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 rounded_border" >
+            <div class="row">
+                <center>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>Solicitudes</h3>
+                            <hr WIDTH="30%" />
+                            <p>Historial completo de Solicitudes</p>
+                        </div>
+                    </div>
+                </center>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <table class='table table-hover borde-tabla table-striped' id="tabla_solicitudes">
+
+                    <thead>
+                        <tr>
+                            <th class='text-center'>Numero de Solicitud</th>
+                            <th class='text-center'>Fecha</th>
+                            <th class='text-center'>Requerimiento</th>
+                            <th class='text-center'>Area</th>
+                            <th class='text-center'>Edificio</th>
+                            <th class='text-center'>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{ for solicitud in filas: }}
+                        <tr>
+                            <td class='text-center'>{{=solicitud.id}}</td>
+                            <td class='text-center'>{{=solicitud.fecha_realizacion}}</td>
+                            <td class='text-center'>
+                                <a class="fa fa-lg fa-eye yellow" data-toggle="collapse" href="#{{=solicitud.id}}"
+                                   title="Ver Requerimiento"></a>
+                                <div id="{{=solicitud.id}}" class="collapse">{{=solicitud.requerimiento}}</div>
+                            </td>
+                            <td class='text-center'>{{=solicitud.area.nombre_area}}</td>
+                            <td class='text-center'>{{=solicitud.edificio.nombre_edificio}}</td>
+                            <td class='text-center'>{{=solicitud.status}}</td>
+                        </tr>
+                        {{ pass }}
+                    </tbody>
+
+                </table>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+{{ end }}

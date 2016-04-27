@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+{{extend 'layout.html'}}
+
+{{block content}}
+
+<input type="hidden" id="cod" value="{{=cod}}">
+<!-- Page Content -->
+<!-- probando nore-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 rounded_border">
+            <div class="row">
+<!-- end probando nore-->
+    <main>
+
+        <input id="tabArea" type="radio" name="tabs" checked>
+        <label for="tabArea">Áreas de Trabajo</label>
+
+        <input id="tabEdificio" type="radio" name="tabs">
+        <label for="tabEdificio">Edificios</label>
+
+        <input id="tabUnidad" type="radio" name="tabs">
+        <label for="tabUnidad">Unidad</label>
+
+        <input id="tabLugar" type="radio" name="tabs">
+        <label for="tabLugar">Lugar</label>
+
+        <input id="tabEmpleado" type="radio" name="tabs">
+        <label for="tabEmpleado">Empleados</label>
+
+        <input id="tabSupervisor" type="radio" name="tabs">
+        <label for="tabSupervisor">Supervisores</label>
+
+        <input id="tabMateriales" type="radio" name="tabs">
+        <label for="tabMateriales">Materiales</label>
+
+        <input id="tabPrioridad" type="radio" name="tabs">
+        <label for="tabPrioridad">Prioridad</label>
+
+        <input id="tabUnidadMetrica" type="radio" name="tabs">
+        <label for="tabUnidadMetrica">Unidad Métricas</label>
+
+
+        <input id="tabSolicitud" type="radio" name="tabs">
+        <label for="tabSolicitud">Solicitud-Estatus</label>
+
+        <section id="contentArea">
+
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Áreas de Trabajo</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de Áreas de Trabajo</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarArea" class="notif_link_but" data-toggle="modal" data-target="#agregarArea">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Área de Trabajo
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+
+            </center>
+
+            <table class='table table-hover borde-tabla table-striped' id="tablaArea">
+                <thead>
+                    <th class="hColumns text-center">Nombre <a href="{{=URL('catalogue', args=['area','nombre','listarCatalogo'])}}">
+                        <span class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"></span> </a>
+                    </th>
+                    <th class="hColumns text-center">Nomenclatura <a
+                            href="{{=URL('catalogue', args=['area','nomenclatura','listarCatalogo'])}}"> <span
+                            class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+               </thead>
+
+                <tbody>
+                {{if len(area):}}
+                {{for area in area:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(area.nombre_area)}}</td>
+                    <td class="hColumns text-center">{{=(area.nomenclatura)}}</td>
+                    <td class="hColumns text-center">{{=(area.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[area.id,'area'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun área registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+            <br/>
+        </section>
+
+        <section id="contentEdificio">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Edificios</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de los Edificios de la USB</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarEdificio" class="notif_link_but" data-toggle="modal" data-target="#agregarEdificio">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Edificio
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaEdificio">
+
+                <thead>
+                    <th class="hColumns text-center">Nombre <a
+                        href="{{=URL('catalogue', args=['edificio','nombre','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Nomenclatura <a
+                        href="{{=URL('catalogue', args=['edificio','nomenclatura','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+
+                <tbody>
+                {{if len(edificio):}}
+                {{for edif in edificio:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(edif.nombre_edificio)}}</td>
+                    <td class="hColumns text-center">{{=(edif.nomenclatura)}}</td>
+                    <td class="hColumns text-center">{{=(edif.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[edif.id,'edificio'])}}" class="fa fa-pencil-square-o fa-lg yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun edificio registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentUnidad">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Unidades</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de las Unidades</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarUnidad" class="notif_link_but" data-toggle="modal" data-target="#agregarUnidad">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Unidad
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaUnidad">
+                <thead>
+                    <th class="hColumns text-center">Nombre</th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+
+                <tbody>
+                {{if len(unidad):}}
+                {{for unidad in unidad:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(unidad.nombre_unidad)}}</td>
+                    <td class="hColumns text-center">{{=(unidad.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[unidad.id,'unidad'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ninguna unidad registrada en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentLugar">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Lugares</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de los Lugares de la USB</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarLugar" class="notif_link_but" data-toggle="modal" data-target="#agregarLugar">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Lugar
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaLugar">
+                <thead>
+                    <th class="hColumns text-center">Edificio <a
+                        href="{{=URL('catalogue', args=['lugar','edificio','listarCatalogo'])}}"><span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Espacio <a href="{{=URL('catalogue', args=['lugar','espacio','listarCatalogo'])}}">
+                        <span class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Referencia</th>
+                    <th class="hColumns text-center">Extencion Tlf</th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+                <tbody>
+                {{if len(lugar):}}
+                {{for lugar in lugar:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(lugar.edificio.nombre_edificio)}}</td>
+                    <td class="hColumns text-center">{{=(lugar.espacio)}}</td>
+                    {{if lugar.referencia != "":}}
+                        <td class="hColumns text-center">{{=(lugar.referencia)}}</td>
+                    {{ else:}}
+                        <td class="hColumns text-center">---</td>
+                    {{ pass }}
+                    {{if lugar.extension_tlf != None:}}
+                        <td class="hColumns text-center">{{=(lugar.extension_tlf)}}</td>
+                    {{ else:}}
+                        <td class="hColumns text-center">---</td>
+                    {{ pass }}
+                    <td class="hColumns text-center">{{=(lugar.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[lugar.id,'lugar'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun lugar registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+
+        <section id="contentEmpleado">
+            <center>
+                <h3>Catálogo de Empleados</h3>
+                <hr WIDTH="30%">
+                <p>Lista de los Empleados</p>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaEmpleado">
+                <thead>
+                    <th class="hColumns text-center">Nombre y Apellido<a
+                        href="{{=URL('catalogue', args=['empleado','nombre','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Cédula</th>
+                    <th class="hColumns text-center">USBId</th>
+                    <th class="hColumns text-center">Área</th>
+                    <th class="hColumns text-center">Cargo</th>
+                    <th class="hColumns text-center">Tlf</th>
+                    <th class="hColumns text-center">Estado</th>
+                </thead>
+                <tbody>
+                {{if len(personal):}}
+                {{for persona in personal:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(persona.nombre)}}</td>
+                    <td class="hColumns text-center">{{=(persona.cedula)}}</td>
+                    <td class="hColumns text-center">{{=(persona.USBID)}}</td>
+                    {{if ((persona.area) != None) :}}
+                        <td class="hColumns text-center">{{=(persona.area.nombre_area)}}</td>
+                    {{else:}}
+                        <td class="hColumns text-center"> --- </td>
+                    {{pass}}
+                    <td class="hColumns text-center">{{=(persona.cargo)}}</td>
+                    <td class="hColumns text-center">{{=(persona.telefono)}}</td>
+                    <td class="hColumns text-center">{{=(persona.estado)}}</td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun personal registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentSupervisores">
+            <center>
+                <h3>Catálogo de Supervisores</h3>
+                <hr WIDTH="30%">
+                <p>Lista de los Supervisores</p>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaSupervisor">
+                <thead>
+                    <th class="hColumns text-center">Nombre y Apellido <a
+                        href="{{=URL('catalogue', args=['supervisor','nombre','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Cédula</th>
+                    <th class="hColumns text-center">USBid </span></th>
+                    <th class="hColumns text-center">Área</th>
+                    <th class="hColumns text-center">Tlf</th>
+                    <th class="hColumns text-center">Estado</th>
+                </thead>
+
+                <tbody>
+                {{if len(supervisor):}}
+                {{for supervisor in supervisor:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(supervisor.nombre)}}</td>
+                    <td class="hColumns text-center">{{=(supervisor.cedula)}}</td>
+                    <td class="hColumns text-center">{{=(supervisor.USBID)}}</td>
+                    {{if ((supervisor.area) != None) :}}
+                        <td class="hColumns text-center">{{=(supervisor.area.nombre_area)}}</td>
+                    {{else:}}
+                        <td class="hColumns text-center"> --- </td>
+                    {{pass}}
+                    <td class="hColumns text-center">{{=(supervisor.telefono)}}</td>
+                    <td class="hColumns text-center">{{=(supervisor.estado)}}</td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun supervisor registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentMaterial">
+            <center>
+                <h3>Catálogo de Materiales</h3>
+                <hr WIDTH="30%">
+                <p>Lista de los Materiales Disponibles</p>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaMaterial">
+                <thead>
+                    <th class="hColumns text-center">Material <a
+                        href="{{=URL('catalogue', args=['inventario','material','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Cantidad <a
+                        href="{{=URL('catalogue', args=['inventario','cantidad','listarCatalogo'])}}"> <span
+                        class="glyphicon glyphicon-chevron-down" style="color:#8b8c8b; margin-left:3px"> </span> </a>
+                    </th>
+                    <th class="hColumns text-center">Unidad Métrica</th>
+                </thead>
+
+                <tbody>
+                {{if len(material):}}
+                {{for inv in material:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(inv.nombre)}}</td>
+                    <td class="hColumns text-center">{{=(inv.cantidad)}}</td>
+                    {{if ((inv.unidad_metrica) != None) :}}
+                        <td class="hColumns text-center">{{=(inv.unidad_metrica.nombre_unidadMetrica)}}</td>
+                    {{else:}}
+                        <td class="hColumns text-center"> --- </td>
+                    {{pass}}
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ningun material registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentPrioridad">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de la Prioridad de las Solicitudes</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de las Posibles Prioridades</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarPrioridad" class="notif_link_but" data-toggle="modal" data-target="#agregarPrioridad">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Prioridad
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaPrioridad">
+                <thead>
+                    <th class="hColumns text-center">Nombre</th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+
+                <tbody>
+                {{if len(prioridad):}}
+                {{for prioridad in prioridad:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(prioridad.nombre_prioridad)}}</td>
+                    <td class="hColumns text-center">{{=(prioridad.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[prioridad.id,'prioridad'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ninguna prioridad registrada en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentUnidadMetrica">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Unidades Métricas</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de las Unidades Métricas</p>
+                    </div>
+                </div>
+                 <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarUnidadMetrica" class="notif_link_but" data-toggle="modal" data-target="#agregarUnidadMetrica">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Unidad Métrica
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaUnidadMetrica">
+                <thead>
+                    <th class="hColumns text-center">Nombre</th>
+                    <th class="hColumns text-center">Nomenclatura</th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+                <tbody>
+                {{if len(unidad_metrica):}}
+                {{for unidad in unidad_metrica:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(unidad.nombre_unidadMetrica)}}</td>
+                    <td class="hColumns text-center">{{=(unidad.nomenclatura)}}</td>
+                    <td class="hColumns text-center">{{=(unidad.estado)}}</td>
+                    <td class="icons">
+                       <a href="{{=URL('mod_catalogo', args=[unidad.id,'unidad_metrica'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center">No hay ninguna unidad métrica registrada en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+
+        <section id="contentSolicitud">
+            <center>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3>Catálogo de Estados de las Solicitudes</h3>
+                        <hr WIDTH="30%">
+                        <p>Lista de los estatus</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="moveDivRight">
+                        <a href="#agregarEstado" class="notif_link_but" data-toggle="modal" data-target="#agregarEstado">
+                            <h5>
+                                <i class="fa fa-plus"></i>
+                                Estado
+                            </h5>
+                        </a>
+                    </div>
+                </div>
+            </center>
+
+            <table class="table table-hover table-striped borde-tabla" id="tablaEstado">
+                <thead>
+                    <th class="hColumns text-center">Nombre</th>
+                    <th class="hColumns text-center">Estado</th>
+                    <th class="hColumns text-center">Editar</th>
+                </thead>
+
+                <tbody>
+                {{if len(status_solicitud):}}
+                {{for status in status_solicitud:}}
+                <tr class="clickable">
+                    <td class="hColumns text-center">{{=(status.nombre_status)}}</td>
+                    <td class="hColumns text-center">{{=(status.estado)}}</td>
+                    <td class="icons">
+                        <a href="{{=URL('mod_catalogo', args=[status.id,'status'])}}" class="fa fa-lg fa-pencil-square-o yellow"></a>
+                    </td>
+                </tr>
+                {{pass}}
+                {{else:}}
+                <center>
+                    <td class="hColumns text-center" >No hay ningun estado registrado en el catálogo</td>
+                    <td></td>
+                    <td></td>
+                </center>
+                {{pass}}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <html>
+
+    <!-- Modal Agregar Edificio-->
+    <div id="agregarEdificio" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Edificio</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_edificio}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Area de Trabajo-->
+    <div id="agregarArea" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Área de Trabajo</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_area}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Unidad-->
+    <div id="agregarUnidad" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Unidad</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_unidad}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Estatus-Solicitud-->
+    <div id="agregarEstado" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Estado de Solicitud</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_status}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Prioridad-->
+    <div id="agregarPrioridad" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Prioridad</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_prioridad}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Lugar-->
+    <div id="agregarLugar" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Lugar</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_lugar}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Agregar Unidad Métrica-->
+    <div id="agregarUnidadMetrica" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Unidad Métrica</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form_unidadMetrica}}
+            </div>
+        </div>
+    </div>
+
+    <!-- /#page-content-wrapper -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            cod = $("#cod").val();
+            if (cod == 'tabla_area') {
+                document.getElementById("tabArea").checked = true;
+            } else if (cod == 'tabla_unidadMetrica') {
+                document.getElementById("tabUnidadMetrica").checked = true;
+            } else if (cod == 'tabla_edificio') {
+                document.getElementById("tabEdificio").checked = true;
+            } else if (cod == 'tabla_unidades') {
+                document.getElementById("tabUnidad").checked = true;
+            } else if (cod == 'tabla_statusSolicitud') {
+                document.getElementById("tabSolicitud").checked = true;
+            } else if (cod == 'tabla_prioridad') {
+                document.getElementById("tabPrioridad").checked = true;
+            } else if (cod == 'tabla_lugar') {
+                document.getElementById("tabLugar").checked = true;
+            } else if (cod == 'tabla_empleado') {
+                document.getElementById("tabEmpleado").checked = true;
+            } else if (cod == 'tabla_inventario') {
+                document.getElementById("tabMateriales").checked = true;
+            } else if (cod == 'tabla_supervisor') {
+                document.getElementById("tabSupervisor").checked = true;
+            } else {
+                document.getElementById("tabArea").checked = true;
+
+            }
+        });
+
+
+    </script>
+    </html>
+
+{{block page_js}}
+    <script src="js/prefixfree.min.js"></script>
+{{end page_js}}
+<!--Probando Norelys -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end Probando Norelys -->
+
+
+{{end}}

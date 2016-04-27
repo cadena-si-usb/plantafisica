@@ -1,0 +1,89 @@
+<div id="Mantenimiento">
+{{if (not myNotif['Departamento de Mantenimiento']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Departamento de Mantenimiento']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>
+
+<div id="Proyectos">
+{{if (not myNotif['Departamento de Proyectos']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Departamento de Proyectos']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>
+
+<div id="Planeacion">
+{{if (not myNotif['Departamento de Planificación']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Departamento de Planeación']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>
+
+<div id="Administracion">
+{{if (not myNotif['Departamento de Administración']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Departamento de Administración']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>
+
+<div id="AtencionInspeccion">
+{{if (not myNotif['Unidad de Atención e Inspección']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Unidad de Atención e Inspección']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>
+
+<div id="Global">
+{{if (not myNotif['Global']):}}
+                    <center>
+                        <div class="alert-box notification_list warning ">
+                            No existen notificaciones recientes para esta categoría.
+                        </div>
+                    </center>
+                {{else:}}
+                    <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                    {{ for x in myNotif['Global']: }}
+                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                    {{pass}}
+                {{pass}}
+</div>

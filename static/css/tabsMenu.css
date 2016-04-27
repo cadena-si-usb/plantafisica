@@ -1,0 +1,215 @@
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:400,600,700");
+@import url("http://netdna.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.css");
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font: 14px/1 'Open Sans', sans-serif;
+  color: #555;
+}
+
+
+
+p {
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+main {
+  min-width: 320px;
+  padding: 30px;
+  background: #fff;
+}
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #ddd;
+}
+
+
+label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  color: #bbb;
+  border: 1px solid transparent;
+}
+
+label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}
+
+label[for*='1']:before {
+  content: '\f271';
+}
+
+label[for*='2']:before {
+  content: '\f0ea';
+}
+
+label[for*='3']:before {
+  content: '\f0ad';
+}
+
+label[for*='4']:before {
+  content: '\f023';
+}
+
+label[for*='5']:before {
+  content: '\f1cd';
+}
+
+label[for*='6']:before {
+  content: '\f0ac';
+}
+
+label:hover {
+  color: #888;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #555;
+  border: 1px solid #ddd;
+  border-top: 2px solid orange;
+  border-bottom: 1px solid #fff;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4,
+#tab5:checked ~ #content5,
+#tab6:checked ~ #content6,
+#tabArea:checked ~ #contentArea,
+#tabEdificio:checked ~ #contentEdificio,
+#tabUnidad:checked ~ #contentUnidad,
+#tabLugar:checked ~ #contentLugar,
+#tabEmpleado:checked ~ #contentEmpleado,
+#tabSupervisor:checked ~ #contentSupervisores,
+#tabMateriales:checked ~ #contentMaterial,
+#tabPrioridad:checked ~ #contentPrioridad,
+#tabUnidadMetrica:checked ~ #contentUnidadMetrica,
+#tabSolicitud:checked ~ #contentSolicitud{
+  display: block;
+}
+
+@media screen and (max-width: 650px) {
+  label {
+    font-size: 0;
+  }
+
+  label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+@media screen and (max-width: 400px) {
+  label {
+    padding: 15px;
+  }
+}
+
+.notification_list {
+  margin-top:    10px;
+  margin-bottom: 10px;
+}
+
+section {
+  padding-right: 30px;
+  padding-left: 30px;
+  overflow-y: auto;
+  height: 70vh;
+}
+
+.notif_link_but:link, .notif_link_but:visited {
+      background-color: #FFF;
+      color: #ec971f;
+      padding: 0.5em 1em;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 5px;
+  }
+
+.notif_link_but span {
+  vertical-align: 5px;  
+}
+
+.notif_link_but i {
+  line-height: 0.75em;  
+}
+
+.notif_link_but:hover, .notif_link_but:active {
+    background-color: #f2b866  ;
+    color: #FFF;
+    opacity:20;
+  }
+
+.notif_link_but i:hover, .notif_link_but i:active {
+    background-color: #f2b866  ;
+    color: #FFF;
+    opacity:20;
+  }
+
+
+.form_submit {
+      background-color: #f2b866;
+      color: #fff;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+  }
+
+
+.form_submit:link, .form_submit:visited {
+      background-color: #f2b866;
+      color: #ec971f;
+      padding: 5px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+  }
+
+
+
+.form_submit:hover, .form_submit:active {
+    background-color: #ec971f  ;
+    color: #FFF;
+    opacity:20;
+  }
+
+
+.form_cancel {
+      background-color: #ededed;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+  }
+
+
+.form_cancel:link, .form_cancel:visited {
+      background-color: #f2b866;
+      color: #ec971f;
+      padding: 5px 25px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+  }
+
+
+
+.form_cancel:hover, .form_cancel:active {
+    background-color: #ec971f  ;
+    color: #FFF;
+    opacity:20;
+  }

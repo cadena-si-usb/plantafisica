@@ -1,0 +1,60 @@
+{{extend 'layout.html'}}
+
+{{block content}}
+<style> 
+textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+    resize: none;
+}
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 rounded_border" >
+            <div class="row">
+            	<h3 style="text-align: center;">Enviar correo electrónico</h3>
+					    <div class="col-lg-8 col-md-offset-1" style="text-align: center;">
+					    {{=form}}
+					    </div>
+
+                    </div>
+<form>
+  <input type="radio" name="opciones" class="radio" value="Habilitado" checked> Habilitado<br>
+  <input type="radio" name="opciones" class="radio" value="Deshabilitado"> Deshabilitado<br>
+</form> 
+
+<form>
+  <textarea>Some text...</textarea>
+</form>
+
+<h3 id="tiempo"> Frecuencia </h3>
+<select name="sometext" style="margin-left: 20px" size="11">
+  <option selected id="tiempo">Lunes</option>
+  <option id="tiempo">Martes</option>
+  <option id="tiempo">Miércoles</option>
+  <option id="tiempo">Jueves</option>
+  <option id="tiempo">Viernes</option>
+  <option id="tiempo">Sábado</option>
+  <option id="tiempo">Domingo</option>
+  <option id="tiempo">Diariamente</option>
+  <option id="tiempo">Mensualmente</option>
+  <option id="tiempo">Semanalmente</option>
+  <option id="tiempo">Anualmente</option>
+</select>
+
+<h3 id="tiempo"> Hora </h3>
+<select name="sometext" style="margin-left: 20px" size="3">
+  <option selected id="tiempo">Cada 12 horas</option>
+  <option id="tiempo">Cada 6 horas</option>
+  <option id="tiempo">Cada 18 horas</option>
+</select>
+
+                    </div>
+{{end}}

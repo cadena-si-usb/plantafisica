@@ -1,0 +1,157 @@
+# -*- coding: utf-8 -*-
+################################################################################
+#                         INICIO DECLARACION BASE DE DATOS                     #
+################################################################################
+
+#------------------------------------------------------------------------------#
+#                               MODULO DE CATALOGO                             #
+#------------------------------------------------------------------------------#
+
+db.define_table('Unidad_metrica',
+<<<<<<< HEAD
+    Field('nombre_unidadMetrica', unique=True, length=20, requires=IS_NOT_EMPTY(),
+          label='Nombre Unidad Métrica'),
+    Field('nomenclatura', unique=True, length=10, requires=IS_NOT_EMPTY() ),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+    format='%(nombre_unidadMetrica)s %(nomenclatura)s'
+               )
+=======
+    Field('nombre_unidadMetrica',unique=True,length=20,requires = IS_NOT_EMPTY(), label='Nombre Unidad Métrica'),
+    Field('nomenclatura',unique=True,length=10,requires = IS_NOT_EMPTY()),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado')
+    )
+>>>>>>> Zetta
+
+db.Unidad_metrica.nombre_unidadMetrica.requires = IS_NOT_IN_DB(db, db.Unidad_metrica.nombre_unidadMetrica)
+db.Unidad_metrica.nomenclatura.requires = IS_NOT_IN_DB(db, db.Unidad_metrica.nomenclatura)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Edificio',
+<<<<<<< HEAD
+    Field('nombre_edificio', unique=True, length=60, requires=IS_NOT_EMPTY() ),
+    Field('nomenclatura', length=5, requires=IS_NOT_EMPTY() ),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+    format='%(nombre_edificio)s %(nomenclatura)s'
+               )
+
+=======
+    Field('nombre_edificio',unique=True,length=60,requires = IS_NOT_EMPTY()),
+    Field('nomenclatura',length=5,requires = IS_NOT_EMPTY()),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado')
+    )
+ 
+>>>>>>> Zetta
+db.Edificio.nombre_edificio.requires = IS_NOT_IN_DB(db, db.Edificio.nombre_edificio)
+db.Edificio.nomenclatura.requires = IS_NOT_IN_DB(db, db.Edificio.nomenclatura)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Lugar',
+    Field('edificio', db.Edificio, requires=IS_IN_DB(db, db.Edificio.nombre_edificio)),
+    Field('espacio', unique=True, length=10),
+    Field('referencia'),
+    Field('extension_tlf', 'integer'),
+<<<<<<< HEAD
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+    format='%(edificio)s %(espacio)s'
+               )
+=======
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado')
+    )
+>>>>>>> Zetta
+
+db.Lugar.edificio.requires = IS_IN_DB(db, db.Edificio.id, '%(nombre_edificio)s')
+db.Lugar.espacio.requires = IS_NOT_IN_DB(db, db.Lugar.espacio)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Area',
+<<<<<<< HEAD
+    Field('nombre_area', unique=True, length=60, requires=IS_NOT_EMPTY() ),
+    Field('nomenclatura', unique=True, length=5, requires=IS_NOT_EMPTY() ),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+    format='%(nombre_area)s %(nomenclatura)s'
+               )
+=======
+    Field('nombre_area',unique=True,length=60,requires = IS_NOT_EMPTY()),
+    Field('nomenclatura',unique=True,length=5,requires = IS_NOT_EMPTY()),
+    Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado')
+    )
+>>>>>>> Zetta
+
+db.Area.nombre_area.requires = IS_NOT_IN_DB(db, db.Area.nombre_area)
+db.Area.nomenclatura.requires = IS_NOT_IN_DB(db, db.Area.nomenclatura)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Unidad',
+<<<<<<< HEAD
+   Field('nombre_unidad', unique=True, length=60, requires=IS_NOT_EMPTY() ),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+   format='%(nombre_unidad)s'
+               )
+=======
+   Field('nombre_unidad', unique=True,length=60,requires = IS_NOT_EMPTY()),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'],
+          error_message='Elija uno de las estados.'), label='Estado')
+   )
+>>>>>>> Zetta
+
+db.Unidad.nombre_unidad.requires = IS_NOT_IN_DB(db, db.Unidad.nombre_unidad)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Status_solicitud',
+<<<<<<< HEAD
+   Field('nombre_status', unique=True, length=20, requires=IS_NOT_EMPTY() ),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+   format='%(nombre_status)s'
+               )
+=======
+   Field('nombre_status',unique=True,length=20,requires = IS_NOT_EMPTY()),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado'))
+>>>>>>> Zetta
+
+db.Status_solicitud.nombre_status.requires = IS_NOT_IN_DB(db, db.Status_solicitud.nombre_status)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Prioridad',
+<<<<<<< HEAD
+   Field('nombre_prioridad', unique=True, length=20, requires = IS_NOT_EMPTY() ),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], error_message='Elija uno de las estados.'),
+          label='Estado' ),
+   format='%(nombre_prioridad)s'
+               )
+=======
+   Field('nombre_prioridad',unique=True,length=20,requires = IS_NOT_EMPTY()),
+   Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
+          error_message='Elija uno de las estados.'), label='Estado'))
+>>>>>>> Zetta
+
+db.Prioridad.nombre_prioridad.requires = IS_NOT_IN_DB(db, db.Prioridad.nombre_prioridad)
+
+#------------------------------------------------------------------------------#
+
+db.define_table('Supervisor',
+    Field('nombre'),
+    Field('cedula'),
+    Field('USBID'),
+    Field('area'),
+    Field('estado'))
+
+################################################################################
+#                          FIN DECLARACION BASE DE DATOS                       #
+################################################################################

@@ -1,0 +1,117 @@
+{{extend 'layout.html'}}
+
+{{ block head }}
+<!-- Custom DataTables plugin -->
+<link rel="stylesheet" type="text/css" href="{{=URL('static','DataTables/datatables.css')}}">
+{{ end }}
+
+{{block page_js}}
+<!-- Custom DataTables plugin -->
+<script src="{{=URL('static','DataTables/datatables.js')}}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabla_solicitudes').DataTable( {
+            "columns": [
+                null,
+                null,
+                null,
+                null,
+                null,
+                { "orderable": false },
+                { "orderable": false }
+            ],
+            responsive: true,
+            "language": {
+                search:         "Buscar:",
+                searchPlaceholder: "",
+                lengthMenu:     "Mostrar _MENU_ entradas",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ entradas.",
+                infoEmpty:      "Mostrando 0 a 0 de 0 entradas",
+                infoFiltered:   "(filtradas de _MAX_ entradas en total)",
+                infoPostFix:    "",
+                loadingRecords: "Carga en curso...",
+                zeroRecords:    "No se encontraron elementos que concuerden con su busqueda",
+                emptyTable:     "No hay informacion disponible en la tabla",
+                processing:     "Procesando...",
+                paginate: {
+                    first:      "Primero",
+                    previous:   "Anterior",
+                    next:       "Siguiente",
+                    last:       "Ultimo"
+                },
+                aria: {
+                    sortAscending:  ": Se ordenan las columnas por orden creciente",
+                    sortDescending: ": Se ordenan las columnas por orden decreciente"
+                }
+            }
+        } );
+    } );
+</script>
+{{end page_js}}
+
+{{block content}}
+
+<!-- Page Content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 rounded_border" >
+            <div class="row">
+                <center>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>Solicitudes</h3>
+                            <hr WIDTH="30%" />
+                            <p>Listado de Solicitudes en el sistema</p>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-4 col-xs-offset-8 col-sm-2 col-sm-offset-10 text-right">
+                        <a class="notif_link_but" title="Crear Solicitud" role='button' href="{{=URL('solicitudes', 'agregar')}}">
+                            <i class="fa fa-plus fa-fw fa-2x yellow"></i>
+                        </a>
+                    </div>
+                </center>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <table class='table table-hover borde-tabla table-striped' id="tabla_solicitudes">
+                    <thead>
+                        <tr>
+                            <th class='text-center'>Prioridad</th>
+                            <th class='text-center'>Area</th>
+                            <th class='text-center'>Unidad</th>
+                            <th class='text-center'>Edificio</th>
+                            <th class='text-center'>Espacio</th>
+                            <th class='text-center'>Editar</th>
+                            <th class='text-center'>Imprimir</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{ for x in filas: }}
+                            <td class='text-center'>{{=x.prioridad.nombre_prioridad}}</td>
+                            <td class='text-center'>{{=x.area.nombre_area}}</td>
+                            <td class='text-center'>{{=x.unidad.nombre_unidad}}</td>
+                            <td class='text-center'>{{=x.edificio.nombre_edificio}}</td>
+                            <td class='text-center'>{{=x.espacio.espacio}}</td>
+                            <td class='text-center'>
+                                <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}'
+                                   class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=x.id}}"></a>
+                            </td>
+                            <td class='text-center'>
+                                <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=x.id}}'
+                                   class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=x.id}}"></a>
+                            </td>
+                        </tr>
+                        {{ pass }}
+                    </tbody>
+                </table>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+{{ end }}

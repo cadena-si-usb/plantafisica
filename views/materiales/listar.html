@@ -1,0 +1,138 @@
+{{extend 'layout.html'}}
+
+{{ block head }}
+<!-- Custom DataTables plugin -->
+<link rel="stylesheet" type="text/css" href="{{=URL('static','DataTables/datatables.css')}}">
+{{ end }}
+
+{{block page_js}}
+<!-- Custom DataTables plugin -->
+<script src="{{=URL('static','DataTables/datatables.js')}}"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#tabla_materiales').DataTable( {
+            "columns": [
+                {"width" : "30%"},
+                null,
+                { "orderable": false },
+                null,
+                { "orderable": false },
+                { "orderable": false }
+            ],
+            responsive: true,
+            "language": {
+                search:         "Buscar:",
+                searchPlaceholder: "",
+                lengthMenu:     "Mostrar _MENU_ entradas",
+                info:           "Mostrando _START_ a _END_ de _TOTAL_ entradas.",
+                infoEmpty:      "Mostrando 0 a 0 de 0 entradas",
+                infoFiltered:   "(filtradas de _MAX_ entradas en total)",
+                infoPostFix:    "",
+                loadingRecords: "Carga en curso...",
+                zeroRecords:    "No se encontraron elementos que concuerden con su busqueda",
+                emptyTable:     "No hay informacion disponible en la tabla",
+                processing:     "Procesando...",
+                paginate: {
+                    first:      "Primero",
+                    previous:   "Anterior",
+                    next:       "Siguiente",
+                    last:       "Ultimo"
+                },
+                aria: {
+                    sortAscending:  ": Se ordenan las columnas por orden creciente",
+                    sortDescending: ": Se ordenan las columnas por orden decreciente"
+                }
+            }
+        } );
+    } );
+</script>
+{{end page_js}}
+
+{{block content}}
+
+<!-- Page Content -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 rounded_border" >
+            <div class="row">
+                <center>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3>Inventario</h3>
+                            <hr WIDTH="30%" />
+                            <p>Listado de Materiales en Inventario</p>
+                        </div>
+                    </div>
+
+                    <!-- Add New Materials -->
+                    <div class="col-xs-4 col-xs-offset-8 col-sm-2 col-sm-offset-10 text-right">
+                        <a class="notif_link_but" title="Agregar Material" role='button' href="{{=URL('materiales', 'agregar')}}">
+                            <i class="fa fa-plus fa-fw fa-2x yellow"></i>
+                        </a>
+                    </div>
+                    <!-- Add new materials -->
+                </center>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class='table table-hover borde-tabla table-striped dt-responsive' id="tabla_materiales">
+
+                        <thead>
+                            <tr>
+                                <th class='text-center'>Nombre</th>
+                                <th class='text-center'>Cantidad</th>
+                                <th class='text-center'>Unidad de Medida</th>
+                                <th class='text-center'>Area</th>
+                                <th class='text-center'>Especificacion</th>
+                                <th class='text-center'>Editar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {{ for x in filas: }}
+                            {{ if x.cantidad>x.cantidad_Minima: }}
+                            <tr>
+                            {{ else: }}
+                            <tr class="inactive">
+                            {{ pass }}
+                                <td class='text-center'>{{=x.nombre.capitalize()}}</td>
+                                <td class='text-center'>{{=x.cantidad}}</td>
+                                <td class='text-center'>
+                                    {{ if x.unidad_metrica!=None: }}
+                                    {{=x.unidad_metrica.nombre_unidadMetrica}}
+                                    {{ else: }}
+                                    ----
+                                    {{ pass }}
+                                </td>
+                                <td class='text-center'>{{=x.area.nombre_area}}</td>
+                                <td class='text-center'>
+                                    {{ if len(x.especificacion.split())!=0: }}
+                                    <div class="visible-xxs"> {{=x.especificacion}} </div>
+                                    <a class="fa fa-lg fa-eye yellow hidden-xxs" data-toggle="collapse" href="#{{=x.id}}"
+                                       title="Ver Especficacion"></a>
+                                    <div id="{{=x.id}}" class="collapse hidden-xxs">{{=x.especificacion}}</div>
+                                    {{ else: }}
+                                    ----
+                                    {{ pass }}
+                                </td>
+                                <td class='text-center'>
+                                    <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}'
+                                       class="fa fa-lg fa-pencil-square-o yellow" title="Modificar {{=x.nombre}}"></a>
+                                </td>
+                            </tr>
+                            {{ pass }}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <br />
+        </div>
+    </div>
+</div>
+
+{{ end }}

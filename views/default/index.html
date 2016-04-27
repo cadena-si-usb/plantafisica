@@ -1,0 +1,56 @@
+{{extend 'layout.html'}}
+
+{{block content}}
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12">
+            <center>
+                <h1>Bienvenido, Usuario.</h1>
+
+                <p>A continuación puede encontrar una lista de sus últimas notificaciones. </p>
+                <a href="#menu-toggle" class="" id="menu-toggle" style="color: #FFF">Para ocultar clic aquí</a>
+                </br>
+            </center>
+        </div>
+    </div>
+
+    <div id="centrar">
+        <div class="col-lg-12 rounded_home">
+            <div class="roundedwhite_home">
+                <center>
+                    <h3>Notificaciones</h3>
+                    <hr WIDTH="30%">
+                    <p>A continuación puede encontrar un resumen de sus últimas operaciones.</p>
+                </center>
+                <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
+                <div id="myNotif">
+                </div>
+                <center>
+                           <a href="{{=URL('notificaciones','notifications')}}" class="notif_link_but">
+                <h5>
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-envelope-o "></i>
+                    Ver historial de notificaciones
+                </h5>
+                               </center>
+            </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- /#page-content-wrapper -->
+{{end}}
+
+{{block page_js}}
+
+<script type="text/javascript">
+    // When the document is ready
+    $(document).ready(function () {
+        $('#myNotif').load('{{=URL('default', 'index_load.html #Global')}}');
+    });
+</script>
+{{end page_js}}
