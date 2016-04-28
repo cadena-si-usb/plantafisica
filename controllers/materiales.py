@@ -46,7 +46,6 @@ def listar():
 def modificar():
     db.Material.status.writable = False
     cantAnterior = db(db.Material.id == request.args(0)).select(db.Material.cantidad).as_list()[0]['cantidad']
-    print('MARICON ', cantAnterior)
     record = db.Material(request.args(0)) or redirect(URL('agregar'))
     form = SQLFORM(db.Material, record)
     form.element(_id='submit_record__row')['_class'] += " text-center"
