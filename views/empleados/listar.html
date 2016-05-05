@@ -114,6 +114,7 @@
                                     <th class='text-center'>Cargo</th>
                                     <th class='text-center'>Area</th>
                                     <th class='text-center'>Teléfono</th>
+                                    <th class='text-center'>Tipo</th>
                                     <th class='text-center'>Editar</th>
                                 </tr>
                             </thead>
@@ -131,6 +132,7 @@
                                     <td class='text-center'>{{=x.cargo}}</td>
                                     <td class='text-center'>{{=x.area.nombre_area}}</td>
                                     <td class='text-center'>{{=x.telefono}}</td>
+                                    <td class='text-center'>{{=x.tipo}}</td>
                                     <td class='text-center'>
                                         <a href="/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}"
                                            class="fa fa-lg fa-pencil-square-o yellow" title="Modificar {{=x.nombre}}"></a>

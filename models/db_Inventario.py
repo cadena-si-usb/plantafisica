@@ -61,6 +61,7 @@ db.define_table('Empleado',
          label='(*) Area' ),
     Field('estado', requires=IS_IN_SET(['Inactivo','Activo'], 
           error_message='Elija uno de las estados.'), label='(*) Estado' ),
+    Field('tipo', requires=IS_IN_SET(['Interno','Externo'], error_message='Elija uno de los tipos.')),
     format='%(nombre)s %(area)s'
     )
 
