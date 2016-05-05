@@ -300,6 +300,7 @@
 'No databases in this application': 'No hay bases de datos en esta aplicación',
 'No es un numero de telefono valido.': 'No es un numero de telefono valido.',
 'No records found': 'No se han encontrado registros',
+'No se encontro ninguna solicitud con ese ID': 'No se encontro ninguna solicitud con ese ID',
 'No se ha podido crear una Lugar.': 'No se ha podido crear una Lugar.',
 'Nombre ya                    esta almacenado, introduzca otro o modifique el anterior.': 'Nombre ya                    esta almacenado, introduzca otro o modifique el anterior.',
 'Nombre ya almacenado, introduzca otro o modifique el anterior.': 'Nombre ya almacenado, introduzca otro o modifique el anterior.',
