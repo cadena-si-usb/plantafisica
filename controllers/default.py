@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from usbutils import get_ldap_data, random_key
+
 #from applications.SIAGES.controllers.notificaciones import notifications_load #No funciona
 
 ### required - do no delete
@@ -15,9 +17,9 @@ def fillPlantillas():
         mensaje="Actualmente posee %cantidad% %unidad% de %nombre%. Las existencias se encuentran en estado crítico.")
     db.Notificacion_plantillas.insert(codigo='NEW_INC', descripcion="INCORPORACIÓN DE PERSONAL: ",
         mensaje="Se informa que %nombre% ahora ejerce como %cargo% en %area%.")
-    db.Notificacion_plantillas.insert(codigo='NEW_DES', descripcion="DESINCORPORACIÓN DE PERSONAL: ", 
+    db.Notificacion_plantillas.insert(codigo='NEW_DES', descripcion="DESINCORPORACIÓN DE PERSONAL: ",
         mensaje="Se informa que %nombre% ha dejado de ejercer como %cargo% en %area%.")
-    db.Notificacion_plantillas.insert(codigo='NEW_SOL', descripcion="NUEVA SOLICITUD", 
+    db.Notificacion_plantillas.insert(codigo='NEW_SOL', descripcion="NUEVA SOLICITUD",
         mensaje="Estimado(a) %nombre%.\nGracias por comunicarse con nosotros a través de nuestro correo electrónico. Cumplimos con informarle que en los actuales momentos estamos procesando su solicitud con el código #%id%,  la cual nos permitirá canalizar a la brevedad posible la situación planteada en el área de mantenimiento correspondiente.\nLe reiteramos nuestro compromiso para servirle mejor.\nDirección de Planta Física\nUnidad De Atención e Inspección\nExt. 3714 / 6114")
     db.Notificacion_plantillas.insert(codigo='SOL_CRE', descripcion='NUEVA SOLICITUD: ',
         mensaje="Se ha creado una nueva solicitud con el código %id%.")
@@ -42,7 +44,7 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
     #db.commit()
     GLOBAL_ICONS={'1': "fa fa-bell", '2':"fa fa-envelope-o", '3':"fa fa-exclamation-circle", '4':"fa fa-exclamation-triangle", '5': "fa fa-comments-o", '6': "fa-flag"}
     icons=['1.png','2.png','3.png','4.png','5.png','6.png']
-    
+
     tablaPlant = db(db.Notificacion_plantillas).select(db.Notificacion_plantillas.id, db.Notificacion_plantillas.descripcion)
     dicPlant = {}
     for plant in tablaPlant:
@@ -74,6 +76,37 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
             myNotif['Global'].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon    })
         myNotif['Global']=myNotif['Global'][0:15]
     return dict(myNotif=myNotif)
+
+def login_cas():
+    if not request.vars.getfirst('ticket'):
+        #redirect(URL('error'))
+        pass
+    try:
+        import urllib2, ssl
+        # ssl._create_default_https_context = ssl._create_unverified_context
+        url = "https://secure.dst.usb.ve/validate?ticket="+\
+              request.vars.getfirst('ticket') +\
+              "&service=http%3A%2F%2F127.0.0.1%3A8000%2FSIAGES%2Fdefault%2Flogin_cas"
+
+        req = urllib2.Request(url)
+        response = urllib2.urlopen(req)
+        the_page = response.read()
+
+    except Exception, e:
+        print e
+        redirect(URL('error'))
+
+    if the_page[0:2] == "no":
+        redirect(URL('index'))
+    else:
+        # session.casticket = request.vars.getfirst('ticket')
+        data  = the_page.split()
+        usbid = data[1]
+
+        usuario = get_ldap_data(usbid) #Se leen los datos del CAS
+
+        redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
+
 
 @auth.requires_login()
 def notifications():
