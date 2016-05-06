@@ -12,4 +12,5 @@ response.menu = [
 (T('Inventario'),URL('materiales','index')==URL(),URL('materiales','index'),[]),
 (T('Empleados'),URL('empleados','index')==URL(),URL('empleados','index'),[]),
 (T('Notificaciones'),URL('notificaciones','notifications')==URL(),URL('notificaciones','notifications'),[]),
+(T('Usuarios'),URL('usuarios','users')==URL(),URL('usuarios','users'),[]),
 ]
