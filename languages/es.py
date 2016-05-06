@@ -164,6 +164,7 @@
 'El empleado fue modificado exitosamente!': 'El empleado fue modificado exitosamente!',
 'El material fue agregado exitosamente!': 'El material fue agregado exitosamente!',
 'El material fue modificado exitosamente!': 'El material fue modificado exitosamente!',
+'El usuario fue Crear exitosamente': 'El usuario fue Crear exitosamente',
 'Elija una de las areas.': 'Elija una de las areas.',
 'Elija una de las unidades.': 'Elija una de las unidades.',
 'Elija uno de las estados.': 'Elija uno de las estados.',
