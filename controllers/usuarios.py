@@ -20,11 +20,11 @@ def agregar():
 
 def listar():
     if request.args(0)==None:
-        filas = db(db.Usuario).select()
+        filas = db(db.Usuario).select(orderby=db.Usuario.id)
     elif request.args(0)=='internos':
-        filas = db(db.Usuario.tipo=='Interno').select()
+        filas = db(db.Usuario.tipo=='Interno').select(orderby=db.Usuario.id)
         response.flash = T('Solo se muestran usuarios internos.')
     elif request.args(0)=='externos':
-        filas = db(db.Usuario.tipo=='Externos').select()
+        filas = db(db.Usuario.tipo=='Externos').select(orderby=db.Usuario.id)
         response.flash = T('Solo se muestran usuarios externos.')
     return locals()
