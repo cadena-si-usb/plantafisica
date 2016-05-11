@@ -407,6 +407,8 @@
 'Solicitudes ordenadas por prioridad.': 'Solicitudes ordenadas por prioridad.',
 'Solo se muestran empleados activos.': 'Solo se muestran empleados activos.',
 'Solo se muestran empleados inactivos.': 'Solo se muestran empleados inactivos.',
+'Solo se muestran usuarios administradores.': 'Solo se muestran usuarios administradores.',
+'Solo se muestran usuarios UAI.': 'Solo se muestran usuarios UAI.',
 'some files could not be removed': 'algunos archivos no pudieron ser removidos',
 'start': 'inicio',
 'starts with': 'comienza por',

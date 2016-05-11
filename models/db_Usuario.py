@@ -16,8 +16,8 @@ db.define_table('Usuario',
           type='string', unique=True, label='(*) USBID' ),
     Field('correo', requires=IS_EMPTY_OR(IS_EMAIL(error_message='Introduzca un email valido.')),
           comment='nombre@mail.com', label='Correo'),
-    Field('tipo', requires=IS_IN_SET(['Admin','UAI'], error_message='Elija uno de los tipos de usuario.'), label='(*) Tipo'),
-    format='%(nombre)s %(area)s')
+    Field('tipo', requires=IS_IN_SET(['Admin','UAI'], error_message='Elija uno de los tipos de usuario.'), label='(*) Tipo')
+    )
 
 
 ################################################################################
