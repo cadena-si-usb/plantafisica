@@ -78,6 +78,9 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
     return dict(myNotif=myNotif)
 
 def login_cas():
+    usuario = "ORYEBA"
+    redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
+
     if not request.vars.getfirst('ticket'):
         #redirect(URL('error'))
         pass
@@ -94,7 +97,9 @@ def login_cas():
 
     except Exception, e:
         print e
-        redirect(URL('error'))
+        usuario = "PRUEBA"
+        redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
+        # redirect(URL('error'))
 
     if the_page[0:2] == "no":
         redirect(URL('index'))
@@ -105,8 +110,25 @@ def login_cas():
 
         usuario = get_ldap_data(usbid) #Se leen los datos del CAS
 
-        redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
+        usuario_guardado = db(db.Usuario.USBID == usbid) 
+        session.usuario = {}
+        session.usuario['usbid'] = usbid
+        if (usuario_guardado):
+            #Admin','UAI'
+            if (usuario_guardado.tipo=="Admin"):
+                session.usuario['tipo']="A"
+            else:
+                session.usuario['tipo']="U"
+        else:
+            session.usuario['tipo']="S"
 
+        redirect(URL(c='default',f='index_logged',vars=dict(usuario=usuario)))
+
+
+def index_logged():
+    session.usuario = {"tipo":"S"}
+    session.usuario['usbid'] = "0910502"
+    return index()
 
 @auth.requires_login()
 def notifications():

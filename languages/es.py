@@ -223,6 +223,7 @@
 'Home': 'Inicio',
 'How did you get here?': '¿Cómo llegaste aquí?',
 'htmledit': 'htmledit',
+'id del solicitante': 'id del solicitante',
 'Impersonate': 'Suplantar',
 'import': 'importar',
 'Import/Export': 'Importar/Exportar',

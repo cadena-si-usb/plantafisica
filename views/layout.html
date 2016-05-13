@@ -70,15 +70,21 @@
 
 <div id="PageSpace" class="PageSpace">
 </div>
-
 <div id="wrapper">
 {{include}}
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
+   
+    {{if session.menu:}}
+        {{if session.usuario['tipo'] == "A":}}
+            {{=MENU(response.admin, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+        {{elif session.usuario['tipo'] == "U":}}
+            {{=MENU(response.uai, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+        {{else:}}
+            {{=MENU(response.menu, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+            {{pass}}
 
-    {{if response.menu:}}
-          {{=MENU(response.menu, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
-          {{pass}}
+    {{pass}}
     </div>
     <!--        <div id="page-content-user" style="visibility: hidden;">
             <ul class="nav navbar-nav navbar-right" style="display:hidden">
