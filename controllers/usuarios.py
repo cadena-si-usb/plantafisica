@@ -5,7 +5,7 @@ def index():
     return locals()
 
 def agregar():
-    form = SQLFORM( db.Usuario, fields=['nombre','USBID','correo','tipo'] )
+    form = SQLFORM( db.Usuario, fields=['nombre','USBID','correo','estado','tipo'] )
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Agregar"
 
