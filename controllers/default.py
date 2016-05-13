@@ -51,6 +51,7 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
         dicPlant[plant.id] = plant.descripcion
 
     #En busqueda de materiales deficientes
+    # if usuario.session : 
     notificationList = db(db.Notificacion).select(orderby=~db.Notificacion.id)
 
     myNotif={'Mantenimiento':[],'Proyectos':[],'Planeación':[],'Administración':[],'Atención e Inspección':[], 'Global':[]}
@@ -126,8 +127,8 @@ def login_cas():
 
 
 def index_logged():
-    session.usuario = {"tipo":"S"}
-    session.usuario['usbid'] = "0910502"
+#     session.usuario = {"tipo":"U"}
+#     session.usuario['usbid'] = "0910502"
     return index()
 
 @auth.requires_login()
