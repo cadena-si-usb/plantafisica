@@ -172,6 +172,7 @@
 'Elija una de las unidades.': 'Elija una de las unidades.',
 'Elija uno de las estados.': 'Elija uno de las estados.',
 'Elija uno de los cargos.': 'Elija uno de los cargos.',
+'Elija uno de los estados.': 'Elija uno de los estados.',
 'Elija uno de los tipos de usuario.': 'Elija uno de los tipos de usuario.',
 'Elija uno de los tipos.': 'Elija uno de los tipos.',
 'Email and SMS': 'Correo electrónico y SMS',
