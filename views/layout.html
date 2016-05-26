@@ -74,17 +74,21 @@
 {{include}}
     <!-- Sidebar -->
     <div id="sidebar-wrapper">
-   
-    {{if session.menu:}}
-        {{if session.usuario['tipo'] == "A":}}
-            {{=MENU(response.admin, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
-        {{elif session.usuario['tipo'] == "U":}}
-            {{=MENU(response.uai, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
-        {{else:}}
-            {{=MENU(response.menu, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
-            {{pass}}
 
-    {{pass}}
+    {{if session.usuario:}}
+        {{if session.usuario['tipo'] == "Admin":}}
+            {{=MENU(response.admin, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+            {{pass}}
+        {{if session.usuario['tipo'] == "UAI":}}
+            {{=MENU(response.uai, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+            {{pass}}
+        {{if session.usuario['tipo'] == "S":}}
+            {{=MENU(response.otros, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+            {{pass}}
+    {{else:}}
+        {{=MENU(response.menu, _class='sidebar-nav',li_class='sidebar-brand',ul_class='sidebar-nav')}}
+        {{pass}}
+
     </div>
     <!--        <div id="page-content-user" style="visibility: hidden;">
             <ul class="nav navbar-nav navbar-right" style="display:hidden">

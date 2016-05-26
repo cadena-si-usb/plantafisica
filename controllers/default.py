@@ -51,7 +51,7 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
         dicPlant[plant.id] = plant.descripcion
 
     #En busqueda de materiales deficientes
-    # if usuario.session : 
+    # if usuario.session :
     notificationList = db(db.Notificacion).select(orderby=~db.Notificacion.id)
 
     myNotif={'Mantenimiento':[],'Proyectos':[],'Planeación':[],'Administración':[],'Atención e Inspección':[], 'Global':[]}
@@ -79,9 +79,6 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
     return dict(myNotif=myNotif)
 
 def login_cas():
-    usuario = "ORYEBA"
-    redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
-
     if not request.vars.getfirst('ticket'):
         #redirect(URL('error'))
         pass
@@ -98,8 +95,6 @@ def login_cas():
 
     except Exception, e:
         print e
-        usuario = "PRUEBA"
-        redirect(URL(c='default',f='index',vars=dict(usuario=usuario)))
         # redirect(URL('error'))
 
     if the_page[0:2] == "no":
@@ -110,25 +105,21 @@ def login_cas():
         usbid = data[1]
 
         usuario = get_ldap_data(usbid) #Se leen los datos del CAS
+        tablaUsuarios = db.Usuario
 
-        usuario_guardado = db(db.Usuario.USBID == usbid) 
-        session.usuario = {}
-        session.usuario['usbid'] = usbid
-        if (usuario_guardado):
-            #Admin','UAI'
-            if (usuario_guardado.tipo=="Admin"):
-                session.usuario['tipo']="A"
-            else:
-                session.usuario['tipo']="U"
+        session.usuario = usuario
+
+        if not db(tablaUsuarios.USBID == usbid).isempty():
+            datosUsuario = db(tablaUsuarios.USBID==usbid).select()[0]
+            session.usuario
+            session.usuario['tipo'] = datosUsuario.tipo
         else:
-            session.usuario['tipo']="S"
+            session.usuario['tipo'] = "S"
 
-        redirect(URL(c='default',f='index_logged',vars=dict(usuario=usuario)))
+        redirect(URL(c='default',f='index_logged',vars=dict()))
 
 
 def index_logged():
-#     session.usuario = {"tipo":"U"}
-#     session.usuario['usbid'] = "0910502"
     return index()
 
 @auth.requires_login()
@@ -149,9 +140,3 @@ def sb():
 
 def error():
     return dict()
-
-'''<!--       <div class="collapse navbar-collapse navbar-ex1-collapse">
-          <ul class="nav navbar-nav navbar-right">
-            {{='auth' in globals() and auth.navbar('Welcome',mode='dropdown') or ''}}
-          </ul>
-       </div> -->'''
