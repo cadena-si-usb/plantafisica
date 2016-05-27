@@ -83,7 +83,6 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Global']: }}
-                        {{print x}}
                         {{if x['tipo'] == 'solicitud':}}
                             <a href={{=URL('solicitudes','show',args=x['id'])}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                             {{pass}}
