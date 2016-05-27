@@ -8,7 +8,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Departamento de Mantenimiento']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
@@ -23,7 +23,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Departamento de Proyectos']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
@@ -38,7 +38,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Departamento de Planeación']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
@@ -53,7 +53,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Departamento de Administración']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
@@ -68,7 +68,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Unidad de Atención e Inspección']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
@@ -83,7 +83,7 @@
                 {{else:}}
                     <!--<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Truncated_Bar_Graph.svg/2000px-Truncated_Bar_Graph.svg.png" width="100%">-->
                     {{ for x in myNotif['Global']: }}
-                        <a href="http://www.google.com"><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                        <a href={{=x['link']}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                     {{pass}}
                 {{pass}}
 </div>
