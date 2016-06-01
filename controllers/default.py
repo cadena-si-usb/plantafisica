@@ -90,7 +90,7 @@ def login_cas():
         ssl._create_default_https_context = ssl._create_unverified_context
         url = "https://secure.dst.usb.ve/validate?ticket="+\
               request.vars.getfirst('ticket') +\
-              "&service=http%3A%2F%2Fpersiste.dex.usb.ve%3A8000%2FSIAGES%2Fdefault%2Flogin_cas"
+              "&service=http%3A%2F%2Fpersiste.dex.usb.ve%2FSIAGES%2Fdefault%2Flogin_cas"
 
         req = urllib2.Request(url)
         response = urllib2.urlopen(req)
