@@ -112,6 +112,7 @@ def login_cas():
         tablaUsuarios = db.Usuario
 
         session.usuario = usuario
+        print session.usuario
         session.usuario['usbid'] = usbid
 
         if not db(tablaUsuarios.USBID == usbid).isempty():
