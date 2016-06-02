@@ -106,12 +106,12 @@ def notifications_load():    #Flush de la tabla
     GLOBAL_ICONS={'1': "fa fa-bell", '2':"fa fa-envelope-o", '3':"fa fa-exclamation-circle", '4':"fa fa-exclamation-triangle", '5': "fa fa-comments-o", '6': "fa-flag"}
     icons=['1.png','2.png','3.png','4.png','5.png','6.png']
     myNotif={'Departamento de Mantenimiento':[],'Departamento de Proyectos':[],'Departamento de Planificación':[],'Departamento de Administración':[],'Unidad de Atención e Inspección':[], 'Global':[]}
-    
+
     tablaPlant = db(db.Notificacion_plantillas).select(db.Notificacion_plantillas.id, db.Notificacion_plantillas.descripcion)
     dicPlant = {}
     for plant in tablaPlant:
         dicPlant[plant.id] = plant.descripcion
-        
+
     #En busqueda de materiales deficientes
     notificationList = db(db.Notificacion).select(orderby=~db.Notificacion.id)
 
@@ -129,16 +129,17 @@ def notifications_load():    #Flush de la tabla
             icons.append(template.icono)
 
         for notification in notificationList:
+            print notification
             myIcon=GLOBAL_ICONS['5']
             date=notification.fecha.strftime("%d/%m/%Y")
             ntype_not="("+date+")-"+ dicPlant[notification.codigo_plantilla]
             # link=db(db.Notificacion_Solicitud.id_notif == notification.id).select(db.Notificacion_Solicitud.id_sol).as_list()[0]['id_sol']
             if notification.departamento:
-                link=''
+                link = URL('solicitudes','show',args=notification.id)
                 myNotif[notification.departamento].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon,'link':link    })
                 myNotif['Global'].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon,'link':link    })
             else:
-                link=''
+                link = URL('materiales','index')
                 myNotif['Global'].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon,'link':link    })
     return dict(myNotif=myNotif)
 
@@ -185,6 +186,10 @@ def show_send_email():
     response.flash='you clicked on civilized'
 
     return dict(form=form)
+
+def show():
+    notif = db(db.Notificacion.id == request.args[0]).select()[0]
+    return dict(notif=notif)
 
 def error():
     return dict()

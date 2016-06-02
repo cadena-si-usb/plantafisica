@@ -74,7 +74,10 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
             date=notification.fecha.strftime("%d/%m/%Y")
 
             ntype_not="("+date+")-"+ dicPlant[notification.codigo_plantilla]
-            myNotif['Global'].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon    })
+            if ntype_not.find("MATERIAL SUFICIENTE:") != -1:
+                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "material"})
+            else:
+                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "solicitud"})
         myNotif['Global']=myNotif['Global'][0:15]
     return dict(myNotif=myNotif)
 
@@ -94,6 +97,7 @@ def login_cas():
         the_page = response.read()
 
     except Exception, e:
+        print "Exception: "
         print e
         # redirect(URL('error'))
 
@@ -108,10 +112,10 @@ def login_cas():
         tablaUsuarios = db.Usuario
 
         session.usuario = usuario
+        session.usuario['usbid'] = usbid
 
         if not db(tablaUsuarios.USBID == usbid).isempty():
             datosUsuario = db(tablaUsuarios.USBID==usbid).select()[0]
-            session.usuario
             session.usuario['tipo'] = datosUsuario.tipo
         else:
             session.usuario['tipo'] = "S"

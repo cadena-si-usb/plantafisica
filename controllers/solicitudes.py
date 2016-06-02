@@ -19,11 +19,17 @@ def index():
     redirect(URL('listar'))
     return locals()
 
+
+def show():
+    sol = db(db.Solicitud.id == request.args[0]).select()[0]
+    return dict(sol=sol)
+
+
 def agregar():
     form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                           'edificio','espacio', 'telefono', 'requerimiento',
                                           'observacion_solicitud'] )
-    form.vars.USBID = session.usuario['usbid'] 
+    form.vars.USBID = session.usuario['usbid']
     #form.fields[usbid] = session.usuario['usbid']
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
@@ -71,7 +77,7 @@ def modificar():
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Modificar"
-    
+
     if form.process().accepted:
         session.flash = T('Solicitud modificada exitosamente!')
 
@@ -212,7 +218,7 @@ def get_pdf():
 def historial():
     filas = db(db.Solicitud).select(orderby=db.Solicitud.id)
     return locals()
-    
+
 def buscador():
     solicitud = None;
     if (request.args(0) != None):
@@ -221,3 +227,5 @@ def buscador():
         else:
             response.flash = T('No se encontro ninguna solicitud con ese ID')
     return locals()
+
+
