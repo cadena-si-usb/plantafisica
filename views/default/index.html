@@ -8,7 +8,13 @@
     <div class="row">
         <div class="col-lg-12">
             <center>
+                {{if session.usuario:}}
+                {{session.usuario}}
+                {{pass}}
                 <h1>Bienvenido  al sistema.</h1>
+                <p>Por favor para utilizar nuestras funcionalidades inicie sesion con el CAS</p>
+                <span class="glyphicon glyphicon-user"></span>
+                {{=A('Iniciar Sesion', _href='https://secure.dst.usb.ve/login?service=http%3A%2F%2F127.0.0.1%3A8000%2FSIAGES%2Fdefault%2Flogin_cas')}}
             </center>
         </div>
     </div>
