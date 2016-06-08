@@ -135,7 +135,8 @@ def notifications_load():    #Flush de la tabla
             ntype_not="("+date+")-"+ dicPlant[notification.codigo_plantilla]
             # link=db(db.Notificacion_Solicitud.id_notif == notification.id).select(db.Notificacion_Solicitud.id_sol).as_list()[0]['id_sol']
             if notification.departamento:
-                link = URL('solicitudes','show',args=notification.id)
+                sol_id = db(db.Notificacion_Solicitud.id_notif == notification.id).select()[0]['id_sol']
+                link = URL('solicitudes','show',args=sol_id)
                 myNotif[notification.departamento].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon,'link':link    })
                 myNotif['Global'].append({'texto':notification.mensaje,'ntype': ntype_not  ,'icon':myIcon,'link':link    })
             else:

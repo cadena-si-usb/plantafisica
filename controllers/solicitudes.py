@@ -45,9 +45,9 @@ def agregar():
         ############ INGRESA LA NOTIFICACION DE LA SOLICITUD ##################
         #######################################################################
         dept = request.vars.tipo
-        appendToDbSol(idSol, dept)
-        idNotif = db(db.Notificacion).select(db.Solicitud.id).as_list()[-1]['id']
-        print(idNotif)
+        novo = appendToDbSol(idSol, dept)
+        # idNotif = db(db.Notificacion).select(db.Solicitud.id).as_list()[-1]['id']
+        idNotif = db(db.Notificacion).select()[-1]['id']
         db.Notificacion_Solicitud.insert(id_sol=idSol, id_notif=idNotif)
         #######################################################################
 

@@ -86,6 +86,9 @@
                         {{if x['tipo'] == 'solicitud':}}
                             <a href={{=URL('solicitudes','show',args=x['id'])}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                             {{pass}}
+                        {{if x['tipo'] == 'personal':}}
+                            <a href={{=URL('empleados','listar')}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
+                            {{pass}}
                         {{if x['tipo'] == 'material':}}
                             <a href={{=URL('materiales','index')}}><div class="alert-box notification_list noPng "><span><i class="{{=x['icon']}} notif_icon"></i>{{=x['ntype']}}</span>{{=x['texto']}}</div></a>
                             {{pass}}
