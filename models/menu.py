@@ -4,11 +4,7 @@ response.meta.author = '%(author)s <%(author_email)s>' % settings
 response.meta.keywords = settings.keywords
 response.meta.description = settings.description
 
-response.menu = [
-(T('Índice'),URL('default','index')==URL(),URL('default','index'),[]),
-(T('Login'),False,'https://secure.dst.usb.ve/login?service=http%3A%2F%2Fpersiste.dex.usb.ve%2FSIAGES%2Fdefault%2Flogin_cas',[]),
-(T('Solicitudes'),URL('solicitudes','listar')==URL(),URL('solicitudes','listar'),[])
-]
+response.menu = []
 
 response.admin = [
 (T('Índice'),URL('default','index')==URL(),URL('default','index_logged'),[]),
