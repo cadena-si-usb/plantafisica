@@ -27,6 +27,8 @@ def fillPlantillas():
         mensaje="Estimado(a) %nombre%. Gracias por comunicarse con nosotros a través de nuestro correo electrónico. Cumplimos con informarle que en los actuales momentos su solicitud con el codigo %id% se encuentra en estado %estado%.\nLe reiteramos nuestro compromiso para servirle mejor.\nDirección de Planta Física\nUnidad De Atención e Inspección\nExt. 3714 / 6114")
 
 def index():
+    if not session.usuario
+        return dict()
     plant=db(db.Notificacion_plantillas.id == 1).select()
     i = 0
     for p in plant:
