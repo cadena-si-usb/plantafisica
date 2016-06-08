@@ -76,8 +76,11 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
             ntype_not="("+date+")-"+ dicPlant[notification.codigo_plantilla]
             if ntype_not.find("MATERIAL SUFICIENTE:") != -1:
                 myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "material"})
+            elif ntype_not.find("PERSONAL:") != -1:
+                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "personal"})
             else:
-                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "solicitud"})
+                sol_id = db(db.Notificacion_Solicitud.id_notif == notification.id).select()[0]['id_sol']
+                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
         myNotif['Global']=myNotif['Global'][0:15]
     return dict(myNotif=myNotif)
 
