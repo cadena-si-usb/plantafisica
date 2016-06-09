@@ -77,12 +77,19 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
 
             ntype_not="("+date+")-"+ dicPlant[notification.codigo_plantilla]
             if ntype_not.find("MATERIAL SUFICIENTE:") != -1:
-                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "material"})
+                if session.usuario['tipo'] != "S":
+                    myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "material"})
             elif ntype_not.find("PERSONAL:") != -1:
-                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "personal"})
+                if session.usuario['tipo'] != "S":
+                    myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "personal"})
             else:
                 sol_id = db(db.Notificacion_Solicitud.id_notif == notification.id).select()[0]['id_sol']
-                myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
+                if session.usuario['tipo'] == "S":
+                    sol = db(db.Solicitud.id == sol_id).select()[0]
+                    if sol.USBID == session.usuario['usbid']:
+                        myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
+                else:
+                    myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
         myNotif['Global']=myNotif['Global'][0:15]
     return dict(myNotif=myNotif)
 
