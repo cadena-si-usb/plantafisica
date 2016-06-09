@@ -14,7 +14,8 @@ response.admin = [
 (T('Inventario'),URL('materiales','index')==URL(),URL('materiales','index'),[]),
 (T('Empleados'),URL('empleados','index')==URL(),URL('empleados','index'),[]),
 (T('Notificaciones'),URL('notificaciones','notifications')==URL(),URL('notificaciones','notifications'),[]),
-(T('Usuarios'),URL('usuarios','listar')==URL(),URL('usuarios','listar'),[])
+(T('Usuarios'),URL('usuarios','listar')==URL(),URL('usuarios','listar'),[]),
+(T('Cerrar Sesión'),URL('default','logout')==URL(),URL('default','logout'),[])
 ]
 
 response.uai = [
@@ -24,10 +25,12 @@ response.uai = [
 (T('Catálogo'),URL('catalogo','catalogue')==URL(),URL('catalogo','catalogue'),[]),
 (T('Inventario'),URL('materiales','index')==URL(),URL('materiales','index'),[]),
 (T('Empleados'),URL('empleados','index')==URL(),URL('empleados','index'),[]),
-(T('Notificaciones'),URL('notificaciones','notifications')==URL(),URL('notificaciones','notifications'),[])
+(T('Notificaciones'),URL('notificaciones','notifications')==URL(),URL('notificaciones','notifications'),[]),
+(T('Cerrar Sesión'),URL('default','logout')==URL(),URL('default','logout'),[])
 ]
 
 response.otros = [
 (T('Índice'),URL('default','index')==URL(),URL('default','index_logged'),[]),
-(T('Solicitudes'),URL('solicitudes','listar')==URL(),URL('solicitudes','listar'),[])
+(T('Solicitudes'),URL('solicitudes','listar')==URL(),URL('solicitudes','listar'),[]),
+(T('Cerrar Sesión'),URL('default','logout')==URL(),URL('default','logout'),[])
 ]

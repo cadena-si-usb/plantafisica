@@ -128,9 +128,16 @@ def login_cas():
 
         redirect(URL(c='default',f='index_logged',vars=dict()))
 
+def logout():
+    session.usuario = None
+    redirect('http://secure.dst.usb.ve/logout')
+
 
 def index_logged():
-    return index()
+    if session.usuario:
+        return index()
+    else:
+        redirect(URL(c='default', f='index',vars=dict()))
 
 @auth.requires_login()
 def notifications():

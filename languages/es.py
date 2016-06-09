@@ -77,6 +77,7 @@
 'cannot upload file "%(filename)s"': 'no es posible subir archivo "%(filename)s"',
 'Catálogo': 'Catálogo',
 'Cedula ya almacenada o no introducida.': 'Cedula ya almacenada o no introducida.',
+'Cerrar Sesión': 'Cerrar Sesión',
 'Change Password': 'Cambie la Contraseña',
 'Change password': 'Cambie la contraseña',
 'change password': 'cambie la contraseña',
