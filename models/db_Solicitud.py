@@ -84,6 +84,10 @@ db.define_table('Solicitud',
           db.Status_solicitud,
           requires = IS_EMPTY_OR(IS_IN_DB(db(db.Status_solicitud.estado=='Activo'), db.Status_solicitud.id,'%(nombre_status)s')),
           label=T('Estado')),
+    Field('vision',
+          label=T('(*) Vision'),
+          requires = IS_IN_SET(['Publica', 'Privada'],
+                     error_message='Debe seleccionar quien puede ver su solicitud.')),
     )
 db.Solicitud.id.label=T('Numero de Solicitud')
 

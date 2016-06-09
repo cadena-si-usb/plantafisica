@@ -27,7 +27,7 @@ def fillPlantillas():
         mensaje="Estimado(a) %nombre%. Gracias por comunicarse con nosotros a través de nuestro correo electrónico. Cumplimos con informarle que en los actuales momentos su solicitud con el codigo %id% se encuentra en estado %estado%.\nLe reiteramos nuestro compromiso para servirle mejor.\nDirección de Planta Física\nUnidad De Atención e Inspección\nExt. 3714 / 6114")
 
 def index():
-    if not session.usuario
+    if not session.usuario:
         return dict()
     plant=db(db.Notificacion_plantillas.id == 1).select()
     i = 0
@@ -81,7 +81,7 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
             elif ntype_not.find("PERSONAL:") != -1:
                 myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': notification.id, 'tipo' : "personal"})
             else:
-                sol_id = db(db.Notificacion_Solicitud.id_notif == notification.id).select()[0]['id_sol']
+                sol_id = db(db.Notificacion_Solicitud.id_notif == notification.id).select()
                 myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
         myNotif['Global']=myNotif['Global'][0:15]
     return dict(myNotif=myNotif)
@@ -119,6 +119,7 @@ def login_cas():
         session.usuario = usuario
         print session.usuario
         session.usuario['usbid'] = usbid
+        # session.usuario['tipo'] = "S"
 
         if not db(tablaUsuarios.USBID == usbid).isempty():
             datosUsuario = db(tablaUsuarios.USBID==usbid).select()[0]

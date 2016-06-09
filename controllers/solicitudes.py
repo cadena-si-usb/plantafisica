@@ -26,9 +26,14 @@ def show():
 
 
 def agregar():
-    form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                          'edificio','espacio', 'telefono', 'requerimiento',
-                                          'observacion_solicitud'] )
+    if session.usuario['tipo'] == "S":
+      form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'observacion_solicitud'] )
+    else : 
+      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
     form.vars.USBID = session.usuario['usbid']
     #form.fields[usbid] = session.usuario['usbid']
     form.element(_id='submit_record__row')['_class'] += " text-center"
@@ -61,7 +66,9 @@ def agregar():
 
 def listar():
     if session.usuario['tipo'] == "S":
-      filas = db(db.Solicitud.USBID == session.usuario['usbid']).select(orderby=db.Solicitud.id)
+      publicas = db(db.Solicitud.vision == "Publica").select(orderby=db.Solicitud.id)
+      privadas = db(db.Solicitud.USBID == session.usuario['usbid']).select(orderby=db.Solicitud.id)
+      filas = publicas | privadas
     else :
       filas = db(db.Solicitud).select(orderby=db.Solicitud.id)
     return locals()
@@ -73,7 +80,14 @@ def modificar():
     solicitudAntDept = query[0]['tipo']
     ###########################################################################
     record = db.Solicitud(request.args(0))
-    form = SQLFORM(db.Solicitud, record)
+    if session.usuario['tipo'] == "S":
+      form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'observacion_solicitud'] )
+    else : 
+      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Modificar"
