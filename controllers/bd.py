@@ -5,7 +5,7 @@ def index():
    return import_manual()
 
 def import_manual():
-   form = FORM(INPUT(_type='file', _name='data'), INPUT(_type='submit', _onClick="return confirm('Esta acción borrara la base de datos actual. ¿Estas seguro?')"))
+   form = FORM(OL(LI("Cargar archivo CSV.", INPUT(_type='file', _name='data', value="Seleccionar archivo")), LI("Restaurar base de datos.", INPUT(_type='submit', _onClick="return confirm('Esta acción borrara la base de datos actual. ¿Estas seguro?')"))))
    form.element(_type='submit')['_class']="btn form_submit"
    form.element(_type='submit')['_value']="Restaurar"
    if form.process().accepted:
