@@ -132,6 +132,7 @@
 'Debe introducir un nombre de contacto.': 'Debe introducir un nombre de contacto.',
 'Debe seleccionar quien puede ver su solicitud': 'Debe seleccionar quien puede ver su solicitud',
 'Debe seleccionar un area de trabajo.': 'Debe seleccionar un area de trabajo.',
+'Debe seleccionar un departamento.': 'Debe seleccionar un departamento.',
 'Debe seleccionar un Departamento.': 'Debe seleccionar un Departamento.',
 'Debe seleccionar un Edificio': 'Debe seleccionar un Edificio',
 'Debe seleccionar un espacio.': 'Debe seleccionar un espacio.',

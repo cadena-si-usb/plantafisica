@@ -81,11 +81,11 @@ def modificar():
     ###########################################################################
     record = db.Solicitud(request.args(0))
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+      form = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
     else : 
-      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+      form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
     form.element(_id='submit_record__row')['_class'] += " text-center"
