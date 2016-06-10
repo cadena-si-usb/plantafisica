@@ -4,13 +4,30 @@
 
 <div class="container-fluid">
     <div id="centrar">
-        <div class="col-lg-12 rounded_home">
+        <div class="col-md-12 rounded_home">
             <div id="roundedwhite_home_log">
-                <div class="col-lg-6">
-                    {{=form}}
+                <div class="row">
+                        <h3 class="text-center">Restaurar</h3>
                 </div>
-                <div class="col-lg-6">
-                    <a class="btn btn-warning" href="{{=URL('bd', 'export_manual')}}">Exportar</a>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        {{=form}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="centrar">
+        <div class="col-md-12 rounded_home">
+            <div id="roundedwhite_home_log">
+                <div class="row">
+                        <h3 class="text-center">Exportar</h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 col-md-offset-1">
+                        <p>Se descargara un archivo .CSV</p>
+                        <a class="btn btn-warning" href="{{=URL('bd', 'export_manual')}}">Exportar</a>
+                    </div>
                 </div>
             </div>
         </div>
