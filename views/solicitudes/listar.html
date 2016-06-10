@@ -100,17 +100,28 @@
                             <td class='text-center'>{{=x.unidad.nombre_unidad}}</td>
                             <td class='text-center'>{{=x.edificio.nombre_edificio}}</td>
                             <td class='text-center'>{{=x.espacio.espacio}}</td>
+                            {{if (session.usuario['tipo'] != "S"): }}
                             <td class='text-center'>
                                 <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}'
                                    class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=x.id}}"></a>
                             </td>
+                            {{else:}}
+                                {{if (session.usuario['usbid'] == x.USBID): }}
+                                    <td class='text-center'>
+                                        <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}'
+                                           class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=x.id}}"></a>
+                                    </td>
+                                {{else:}}
+                                    <div></div>
+                                {{pass}}
+                            {{pass}}
                             {{if session.usuario['tipo'] != "S":}}
                                 <td class='text-center'>
                                     <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=x.id}}'
                                        class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=x.id}}"></a>
                                 </td>
                             {{else:}}
-                                <div><div>
+                                <div></div>
                             {{pass}}
                         </tr>
                         {{ pass }}
