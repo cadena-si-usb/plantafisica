@@ -74,9 +74,8 @@ db.define_table('Solicitud',
           type='date',
           label=T('Fecha de culminación')),
     Field('trabajador',
-         type='list:string',
-         label=T('Trabajadores Asignados'),
-         default=['1.', '2.', '3.', '4.', '5.', '6.']),
+          'list:reference Empleado',
+         label=T('Trabajadores Asignados')),
     Field('observacion_ejecucion',
           type='text',
           label=T('Observaciones de Ejecución')),
@@ -88,6 +87,7 @@ db.define_table('Solicitud',
           label=T('(*) Vision'),
           requires = IS_IN_SET(['Publica', 'Privada'],
                      error_message='Debe seleccionar quien puede ver su solicitud.')),
+    fake_migrate = True,migrate = False
     )
 db.Solicitud.id.label=T('Numero de Solicitud')
 
