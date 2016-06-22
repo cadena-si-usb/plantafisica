@@ -222,6 +222,10 @@ def appendToDbSol(code, dept):
     from gluon import current
     db = current.db
 
+    print "PASE POR AQUI"
+    print session.usuario
+    print "ASI ES"
+
     mensaje = db(db.Notificacion_plantillas.id == 6).select()[0]
     mensaje = str(mensaje['mensaje'])
     mensaje = mensaje.replace("%id%", str(code))

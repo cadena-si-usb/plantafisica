@@ -30,7 +30,7 @@ def agregar():
       form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
-    else : 
+    else :
       form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
@@ -84,7 +84,7 @@ def modificar():
       form = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
-    else : 
+    else :
       form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
@@ -117,6 +117,16 @@ def modificar():
 
     return locals()
 
+def get_trabajadores_pdf(trabajadores):
+  if(len(trabajadores) == 2):
+    return [trabajadores[0].nombre, '', '', trabajadores[1].nombre, '', '']
+  elif(len(trabajadores) == 1):
+    return [trabajadores[0].nombre, '', '', '', '', '']
+  else:
+    return ['', '', '', '', '', '']
+
+
+
 def get_pdf():
     solicitud = db.Solicitud(request.args(0))
     tmpfilename=os.path.join(request.folder,'private',str(uuid4()))
@@ -136,9 +146,9 @@ def get_pdf():
             ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
             [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
             ['Trabajadores Asignados', '', '', '', '', ''],
-            [solicitud.trabajador[0], '', '', solicitud.trabajador[3], '', ''],
-            [solicitud.trabajador[1], '', '', solicitud.trabajador[4], '', ''],
-            [solicitud.trabajador[2], '', '', solicitud.trabajador[5], '', ''],
+            get_trabajadores_pdf(solicitud.trabajador[0:2]),
+            get_trabajadores_pdf(solicitud.trabajador[2:4]),
+            get_trabajadores_pdf(solicitud.trabajador[4:6]),
             [''],
             ['Observaciones', '', '', '', 'Trabajo Terminado', ''],
             [solicitud.observacion_ejecucion, '', '', '', '', 'Terminado'],

@@ -64,7 +64,7 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
 
 
     if not notificationList:
-        return dict(myNotif=myNotif)
+        return dict(myNotif=myNotif, usuario=session.usuario)
     else:
         icons=[]
         templates=db(db.Notificacion_habilitada).select(orderby=db.Notificacion_habilitada.codigo_plantilla)
@@ -91,7 +91,8 @@ def index_load():    #Esto deberia importarse desde notificaciones, pero no supe
                 else:
                     myNotif['Global'].append({'texto':notification.mensaje, 'ntype': ntype_not , 'icon':myIcon, 'id': sol_id, 'tipo' : "solicitud"})
         myNotif['Global']=myNotif['Global'][0:15]
-    return dict(myNotif=myNotif)
+    print "dfdladdskklkdkak"
+    return dict(myNotif=myNotif,usuario=session.usuario)
 
 def login_cas():
     if not request.vars.getfirst('ticket'):
@@ -142,6 +143,8 @@ def logout():
 
 
 def index_logged():
+    # print "AQUI"
+    # print session.usuario
     if session.usuario:
         return index()
     else:
