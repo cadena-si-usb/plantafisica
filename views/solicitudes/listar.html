@@ -85,6 +85,7 @@
                             <th class='text-center'>Unidad</th>
                             <th class='text-center'>Edificio</th>
                             <th class='text-center'>Espacio</th>
+                            <th class='text-center'>Estado</th>
                             <th class='text-center'>Editar</th>
                             {{if session.usuario['tipo'] != "S":}}
                                 <th class='text-center'>Imprimir</th>
@@ -100,6 +101,11 @@
                             <td class='text-center'>{{=x.unidad.nombre_unidad}}</td>
                             <td class='text-center'>{{=x.edificio.nombre_edificio}}</td>
                             <td class='text-center'>{{=x.espacio.espacio}}</td>
+                            {{ if (x.status == None):}}
+                                <td class='text-center'>Sin revisar</td>
+                            {{else:}}
+                                <td class='text-center'>{{=x.status.nombre_status}}</td>
+                            {{pass}}
                             {{if (session.usuario['tipo'] != "S"): }}
                             <td class='text-center'>
                                 <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=x.id}}'
