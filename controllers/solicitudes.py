@@ -132,6 +132,16 @@ def get_pdf():
     tmpfilename=os.path.join(request.folder,'private',str(uuid4()))
     doc = SimpleDocTemplate(tmpfilename)
     elements = []
+    trabajadores = []
+    if solicitud.trabajador == None:
+      trabajadores.append('')
+      trabajadores.append('')
+      trabajadores.append('')
+    else: 
+      trabajadores.append(solicitud.trabajador[0:2])
+      trabajadores.append(solicitud.trabajador[2:4])
+      trabajadores.append(solicitud.trabajador[4:6])
+
     data = [['UNIVERSIDAD SIMÓN BOLÍVAR\nVICERRECTORADO ADMINISTRATIVO\nDIRECCIÓN DE PLANTA FÍSICA\nUnidad de Atención e Inspección', '' , 'SOLICITUD DE SERVICIO DE LA DIRECCIÓN PLANTA FÍSICA', '', '', ''],
             [''],
             ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área de Trabajo: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
@@ -146,9 +156,9 @@ def get_pdf():
             ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
             [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
             ['Trabajadores Asignados', '', '', '', '', ''],
-            get_trabajadores_pdf(solicitud.trabajador[0:2]),
-            get_trabajadores_pdf(solicitud.trabajador[2:4]),
-            get_trabajadores_pdf(solicitud.trabajador[4:6]),
+            get_trabajadores_pdf(trabajadores[0]),
+            get_trabajadores_pdf(trabajadores[1]),
+            get_trabajadores_pdf(trabajadores[2]),
             [''],
             ['Observaciones', '', '', '', 'Trabajo Terminado', ''],
             [solicitud.observacion_ejecucion, '', '', '', '', 'Terminado'],
