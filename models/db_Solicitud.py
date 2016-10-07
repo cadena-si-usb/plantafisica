@@ -11,8 +11,7 @@
 db.define_table('Solicitud',
     Field('prioridad',
           db.Prioridad,
-          requires = IS_IN_DB(db(db.Prioridad.estado=='Activo'), db.Prioridad,'%(nombre_prioridad)s',
-                     error_message='Debe seleccionar una prioridad.'),
+          requires = IS_EMPTY_OR(IS_IN_DB(db(db.Prioridad.estado=='Activo'), db.Prioridad,'%(nombre_prioridad)s')),
           label=T('(*) Prioridad')),
     Field('fecha_realizacion',
           type='date',
@@ -24,8 +23,7 @@ db.define_table('Solicitud',
           label=T('USBID del solicitante')),
     Field('area',
           db.Area,
-          requires = IS_IN_DB(db(db.Area.estado=='Activo'), db.Area.id,'%(nombre_area)s',
-                     error_message='Debe seleccionar un area de trabajo.'),
+          requires = IS_EMPTY_OR(IS_IN_DB(db(db.Area.estado=='Activo'), db.Area.id,'%(nombre_area)s')),
           label=T('(*) Area de Trabajo')),
     Field('tipo',
           label=T('(*) Tipo'),
@@ -87,6 +85,7 @@ db.define_table('Solicitud',
           label=T('(*) Vision'),
           requires = IS_IN_SET(['Publica', 'Privada'],
                      error_message='Debe seleccionar quien puede ver su solicitud.')),
+    fake_migrate=True,migrate = False
     )
 db.Solicitud.id.label=T('Numero de Solicitud')
 
