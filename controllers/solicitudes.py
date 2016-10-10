@@ -27,7 +27,7 @@ def show():
 
 def agregar():
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+      form = SQLFORM( db.Solicitud, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
@@ -81,7 +81,7 @@ def modificar():
     ###########################################################################
     record = db.Solicitud(request.args(0))
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
+      form = SQLFORM( db.Solicitud, record = record, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
@@ -137,7 +137,7 @@ def get_pdf():
       trabajadores.append('')
       trabajadores.append('')
       trabajadores.append('')
-    else: 
+    else:
       trabajadores.append(solicitud.trabajador[0:2])
       trabajadores.append(solicitud.trabajador[2:4])
       trabajadores.append(solicitud.trabajador[4:6])
