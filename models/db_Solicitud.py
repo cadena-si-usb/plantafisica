@@ -87,6 +87,7 @@ db.define_table('Solicitud',
           label=T('(*) Vision'),
           requires = IS_IN_SET(['Publica', 'Privada'],
                      error_message='Debe seleccionar quien puede ver su solicitud.')),
+    migrate=True
     )
 db.Solicitud.id.label=T('Numero de Solicitud')
 

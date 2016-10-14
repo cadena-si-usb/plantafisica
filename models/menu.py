@@ -16,6 +16,7 @@ response.admin = [
 (T('Notificaciones'),URL('notificaciones','notifications')==URL(),URL('notificaciones','notifications'),[]),
 (T('Usuarios'),URL('usuarios','listar')==URL(),URL('usuarios','listar'),[]),
 (T('Respaldo'),URL('bd','index')==URL(),URL('bd','index'),[]),
+(T('Estadísticas'),URL('estadisticas','index')==URL(),URL('estadisticas','index'),[]),
 (T('Cerrar Sesión'),URL('default','logout')==URL(),URL('default','logout'),[])
 ]
 
