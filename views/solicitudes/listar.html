@@ -19,6 +19,7 @@
                 null,
                 { "orderable": false },
                 { "orderable": false },
+                { "orderable": false },
                 { "orderable": false }
             ],
             responsive: true,
@@ -117,8 +118,8 @@
                                     <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=solicitud.id}}'
                                        class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=solicitud.id}}"></a>
                                 </td>
-                                {{else:}}
-                                {{pass}}
+                            {{else:}}
+                            {{pass}}
                         </tr>
                         {{ pass }}
                     </tbody>
