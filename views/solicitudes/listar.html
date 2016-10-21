@@ -19,6 +19,7 @@
                 null,
                 { "orderable": false },
                 { "orderable": false },
+                { "orderable": false },
                 { "orderable": false }
             ],
             responsive: true,
@@ -114,11 +115,11 @@
                                     <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=solicitud.id}}' class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=solicitud.id}}"></a>
                                 </td>
                                 <td class='text-center'>
-                                    <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=x.id}}'
-                                       class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=x.id}}"></a>
+                                    <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=solicitud.id}}'
+                                       class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=solicitud.id}}"></a>
                                 </td>
-                                {{else:}}
-                                {{pass}}
+                            {{else:}}
+                            {{pass}}
                         </tr>
                         {{ pass }}
                     </tbody>
