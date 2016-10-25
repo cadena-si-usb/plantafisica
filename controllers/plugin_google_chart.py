@@ -23,8 +23,11 @@ def plugin_google_chart():
         return dict()
 
 def getData():
+    s = db.executesql("SELECT fecha_realizacion FROM Solicitud")
+    print s
     pendientes = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Pendiente' GROUP BY Solicitud.area;", as_dict = True)
     realizadas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
+    anuladas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
 
     data = {}
     for d in realizadas:
@@ -32,18 +35,31 @@ def getData():
             data[d['nombre_area']] = {
                 'realizadas': d['count(Solicitud.area)'],
                 'pendientes': 0,
+                'anuladas': 0,
                 'totales': d['count(Solicitud.area)'],
             }
     for d in pendientes:
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': 0,
+                'anuladas': 0,
                 'pendientes': d['count(Solicitud.area)'],
                 'totales': d['count(Solicitud.area)'],
             }
         else:
             data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
             data[d['nombre_area']]['pendientes'] = d['count(Solicitud.area)']
+    for d in anuladas:
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': d['count(Solicitud.area)'],
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['anuladas'] = d['count(Solicitud.area)']
 
     for key in data.keys():
         data[key]['efectividad'] = (float(data[key]['realizadas']) / data[key]['totales']) * 100
@@ -56,7 +72,7 @@ def plugin_return_data():
     This can also use the @auth.requires_signature() decorator
     """
     info = getData()
-    data = [['Areas','Solicitadas','Solucionadas','Pendientes']]
+    data = [['Areas','Solicitadas','Solucionadas','Pendientes','Anuladas']]
 
     for key in info:
         d = []
@@ -64,6 +80,7 @@ def plugin_return_data():
         d.append(info[key]['totales'])
         d.append(info[key]['realizadas'])
         d.append(info[key]['pendientes'])
+        d.append(info[key]['anuladas'])
         print d
         data.append(d)
     return dict(data=data)
