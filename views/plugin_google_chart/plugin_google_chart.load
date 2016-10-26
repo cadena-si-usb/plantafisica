@@ -10,7 +10,6 @@
       // instantiates the pie chart, passes in the data and
       // draws it.
       function drawChart() {
-        debugger;
         // Create the data table.
         var chart_type = '{{=chart_type}}'
         var div_id = "chart_div-{{=request.cid}}"
