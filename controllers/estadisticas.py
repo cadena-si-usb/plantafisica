@@ -6,4 +6,9 @@ def index():
     return locals()
 
 def estadisticas():
+    print "hola"
+    month = request.vars.month
+    year = request.vars.year
+    print month, year
+    print "chao"
     return locals()

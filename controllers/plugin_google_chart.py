@@ -29,6 +29,9 @@ def getData():
     realizadas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
     anuladas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
 
+    # value = request.vars.data
+    # print value
+
     data = {}
     for d in realizadas:
         if d['nombre_area'] not in data.keys():

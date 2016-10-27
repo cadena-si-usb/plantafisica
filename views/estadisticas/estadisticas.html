@@ -6,7 +6,80 @@
 
 <!-- need to source this in any view which has a LOAD chart -->
 <script src="https://www.google.com/jsapi" type="text/javascript"></script>
- 
+<script src="{{=URL('static','Stadistics/stadistics.js')}}"></script> 
+
+<body>
+
+<script>
+
+function populateMonths() {
+    var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+    var month_element = document.getElementById("MonthSelect")
+
+    if (month_element.children.length > 0) {
+        return
+    }
+    for (month in months) { 
+        a = document.createElement("a")
+        li = document.createElement("li")
+        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(month="+ months[month]+ "))}}" )
+        node = document.createTextNode(months[month])
+        a.appendChild(node)
+        li.appendChild(a)
+        month_element.appendChild(li)
+    } 
+}
+
+function populateYears() {
+    var maxYear = new Date().getFullYear()
+    var minYear = maxYear - 9
+
+    year_element = document.getElementById("YearSelect")
+    if (year_element.children.length > 0) {
+        return
+    }
+    for (i = minYear; i <= maxYear; i++) { 
+        a = document.createElement("a")
+        li = document.createElement("li")
+        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(year="+i+"))}}" )
+        node = document.createTextNode(i.toString())
+        a.appendChild(node)
+        li.appendChild(a)
+        year_element.appendChild(li)
+    } 
+}
+
+window.onload = function(){
+  populateMonths()
+  populateYears()
+}
+
+
+</script>
+
+<div class="btn-group">
+ <div class="btn-group">
+    <button onclick="populateMonths()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      Mes
+    </button>
+    <ul class="dropdown-menu" role="menu" id="MonthSelect">
+      
+    </ul>
+  </div>
+
+  <div class="btn-group">
+    <button onclick="populateYears()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     Año
+    </button>
+    <ul class="dropdown-menu" role="menu" id="YearSelect">
+    </ul>
+  </div>
+
+</div>
+
+
+</body>
+
 <!-- Here, data and options same for both charts -->
 <!-- user_signature works if using logged-in users ... not well tested -->
 {{ data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True)
