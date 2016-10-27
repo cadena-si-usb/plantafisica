@@ -6,7 +6,7 @@
 
 <!-- need to source this in any view which has a LOAD chart -->
 <script src="https://www.google.com/jsapi" type="text/javascript"></script>
-<script src="{{=URL('static','Stadistics/stadistics.js')}}"></script> 
+<script src="{{=URL('static','Stadistics/stadistics.js')}}"></script>
 
 <body>
 
@@ -19,15 +19,16 @@ function populateMonths() {
     if (month_element.children.length > 0) {
         return
     }
-    for (month in months) { 
+    for (month in months) {
         a = document.createElement("a")
         li = document.createElement("li")
-        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(month="+ months[month]+ "))}}" )
+        // a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(month="+ months[month]+ "))}}" )
+        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas')}}" + "?month=" + months[month] )
         node = document.createTextNode(months[month])
         a.appendChild(node)
         li.appendChild(a)
         month_element.appendChild(li)
-    } 
+    }
 }
 
 function populateYears() {
@@ -38,15 +39,16 @@ function populateYears() {
     if (year_element.children.length > 0) {
         return
     }
-    for (i = minYear; i <= maxYear; i++) { 
+    for (i = minYear; i <= maxYear; i++) {
         a = document.createElement("a")
         li = document.createElement("li")
-        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(year="+i+"))}}" )
+        // a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(year="+i+"))}}" )
+        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas')}}" + "?year=" + i)
         node = document.createTextNode(i.toString())
         a.appendChild(node)
         li.appendChild(a)
         year_element.appendChild(li)
-    } 
+    }
 }
 
 window.onload = function(){
@@ -63,7 +65,7 @@ window.onload = function(){
       Mes
     </button>
     <ul class="dropdown-menu" role="menu" id="MonthSelect">
-      
+
     </ul>
   </div>
 
@@ -86,9 +88,9 @@ window.onload = function(){
   #options are documented at https://developers.google.com/chart/
   options ={'title':'Relacion de Solicitudes de Mantenimiento de Planta Fisica','width':1000,'height':1200}
           }}
- 
 
- 
+
+
 <div class="span6">
 {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
     vars={'type':'column','data_url':data_url,'options_dict':options})
