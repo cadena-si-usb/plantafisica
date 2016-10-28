@@ -1,65 +1,62 @@
 {{extend 'layout.html'}}
 
-
 {{block content}}
-
 
 <!-- need to source this in any view which has a LOAD chart -->
 <script src="https://www.google.com/jsapi" type="text/javascript"></script>
 <script src="{{=URL('static','Stadistics/stadistics.js')}}"></script>
 
-<body>
-
 <script>
 
-function populateMonths() {
-    var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
-    var month_element = document.getElementById("MonthSelect")
+    function populateMonths() {
+        var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        var month_element = document.getElementById("MonthSelect");
 
-    if (month_element.children.length > 0) {
-        return
+        for (month in months) {
+            // a = document.createElement("a")
+            // li = document.createElement("li")
+            // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?month=" + months[month] )
+            // node = document.createTextNode(months[month])
+            // a.appendChild(node)
+            // li.appendChild(a)
+            // month_element.appendChild(li)
+            option = document.createElement('option');
+            option.value = months[month];
+            option.textContent = months[month];
+            month_element.appendChild(option);
+        }
     }
-    for (month in months) {
-        a = document.createElement("a")
-        li = document.createElement("li")
-        // a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(month="+ months[month]+ "))}}" )
-        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas')}}" + "?month=" + months[month] )
-        node = document.createTextNode(months[month])
-        a.appendChild(node)
-        li.appendChild(a)
-        month_element.appendChild(li)
+
+    function populateYears() {
+        var maxYear = new Date().getFullYear();
+        var minYear = maxYear - 9;
+        year_element = document.getElementById("YearSelect");
+
+        for (i = minYear; i <= maxYear; i++) {
+            // a = document.createElement("a");
+            // li = document.createElement("li");
+            // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?year=" + i);
+            // node = document.createTextNode(i.toString());
+            // a.appendChild(node);
+            // li.appendChild(a);
+            // year_element.appendChild(li);
+            option = document.createElement('option');
+            option.value = i;
+            option.textContent = i;
+            year_element.appendChild(option);
+        }
     }
-}
 
-function populateYears() {
-    var maxYear = new Date().getFullYear()
-    var minYear = maxYear - 9
-
-    year_element = document.getElementById("YearSelect")
-    if (year_element.children.length > 0) {
-        return
+    window.onload = function(){
+      populateMonths();
+      populateYears()
     }
-    for (i = minYear; i <= maxYear; i++) {
-        a = document.createElement("a")
-        li = document.createElement("li")
-        // a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas', vars=dict(year="+i+"))}}" )
-        a.setAttribute("href", "{{=URL('estadisticas', 'estadisticas')}}" + "?year=" + i)
-        node = document.createTextNode(i.toString())
-        a.appendChild(node)
-        li.appendChild(a)
-        year_element.appendChild(li)
-    }
-}
 
-window.onload = function(){
-  populateMonths()
-  populateYears()
-}
+  </script>
 
+<body>
 
-</script>
-
-<div class="btn-group">
+<!-- <div class="btn-group">
  <div class="btn-group">
     <button onclick="populateMonths()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
       Mes
@@ -77,8 +74,18 @@ window.onload = function(){
     </ul>
   </div>
 
-</div>
+</div> -->
 
+<form enctype="multipart/form-data" action="{{=URL('plugin_google_chart', 'plugin_return_data')}}" method="post">
+  
+  <select name="month" id="MonthSelect">
+  </select>
+  
+  <select name="year" id="YearSelect">
+  </select>
+
+  <input type="submit"></input>
+</form>
 
 </body>
 
@@ -89,13 +96,10 @@ window.onload = function(){
   options ={'title':'Relacion de Solicitudes de Mantenimiento de Planta Fisica','width':1000,'height':1200}
           }}
 
-
-
 <div class="span6">
 {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
     vars={'type':'column','data_url':data_url,'options_dict':options})
 }}
 </div>
-
 
 {{end}}

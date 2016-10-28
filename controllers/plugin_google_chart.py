@@ -22,18 +22,38 @@ def plugin_google_chart():
     else:
         return dict()
 
-def getData():
-    s = db.executesql("SELECT fecha_realizacion FROM Solicitud")
-    print s
-    pendientes = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Pendiente' GROUP BY Solicitud.area;", as_dict = True)
-    realizadas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
-    anuladas = db.executesql("SELECT Area.nombre_area, Status_solicitud.nombre_status, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
+def getData(month,year):
+    pendientes = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Pendiente' GROUP BY Solicitud.area;", as_dict = True)
+    realizadas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
+    anuladas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
 
-    # value = request.vars.data
-    # print value
+    isNone = False
+
+    months = {
+        1: "Enero",
+        2: "Febrero",
+        3: "Marzo",
+        4: "Abril",
+        5: "Mayo",
+        6: "Junio",
+        7: "Julio",
+        8: "Agosto",
+        9: "Septiembre",
+        10: "Octubre",
+        11: "Noviembre",
+        12: "Diciembre"
+    }
+
+    if not (month and year):
+        isNone = True
 
     data = {}
     for d in realizadas:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == year)):
+                continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': d['count(Solicitud.area)'],
@@ -42,6 +62,11 @@ def getData():
                 'totales': d['count(Solicitud.area)'],
             }
     for d in pendientes:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == year)):
+                continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': 0,
@@ -53,6 +78,11 @@ def getData():
             data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
             data[d['nombre_area']]['pendientes'] = d['count(Solicitud.area)']
     for d in anuladas:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == year)):
+                continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -74,7 +104,16 @@ def plugin_return_data():
     The URL should have a .json suffix
     This can also use the @auth.requires_signature() decorator
     """
-    info = getData()
+
+
+    args = request.vars
+    month = args.month
+    year = args.year
+    print "*************************************"
+    print month,year
+    print "*************************************"
+
+    info = getData(month,year)
     data = [['Areas','Solicitadas','Solucionadas','Pendientes','Anuladas']]
 
     for key in info:
@@ -84,8 +123,10 @@ def plugin_return_data():
         d.append(info[key]['realizadas'])
         d.append(info[key]['pendientes'])
         d.append(info[key]['anuladas'])
-        print d
         data.append(d)
+        
+    if (month and year):
+        redirect(URL('estadisticas','estadisticas', vars=dict(data=data)))
     return dict(data=data)
 
 
