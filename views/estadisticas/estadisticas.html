@@ -1,26 +1,126 @@
 {{extend 'layout.html'}}
 
-
 {{block content}}
-
 
 <!-- need to source this in any view which has a LOAD chart -->
 <script src="https://www.google.com/jsapi" type="text/javascript"></script>
- 
+<script src="{{=URL('static','Stadistics/stadistics.js')}}"></script>
+
+<script>
+
+  function populateMonths() {
+      var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      var month_element = document.getElementById("MonthSelect");
+
+      for (month in months) {
+          // a = document.createElement("a")
+          // li = document.createElement("li")
+          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?month=" + months[month] )
+          // node = document.createTextNode(months[month])
+          // a.appendChild(node)
+          // li.appendChild(a)
+          // month_element.appendChild(li)
+          option = document.createElement('option');
+          option.value = months[month];
+          option.textContent = months[month];
+          month_element.appendChild(option);
+      }
+  }
+
+  function populateYears() {
+      var maxYear = new Date().getFullYear();
+      var minYear = maxYear - 9;
+      year_element = document.getElementById("YearSelect");
+
+      for (i = minYear; i <= maxYear; i++) {
+          // a = document.createElement("a");
+          // li = document.createElement("li");
+          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?year=" + i);
+          // node = document.createTextNode(i.toString());
+          // a.appendChild(node);
+          // li.appendChild(a);
+          // year_element.appendChild(li);
+          option = document.createElement('option');
+          option.value = i;
+          option.textContent = i;
+          year_element.appendChild(option);
+      }
+  }
+
+  window.onload = function(){
+    populateMonths();
+    populateYears()
+  }
+
+</script>
+
+<body>
+
+<!-- <div class="btn-group">
+ <div class="btn-group">
+    <button onclick="populateMonths()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+      Mes
+    </button>
+    <ul class="dropdown-menu" role="menu" id="MonthSelect">
+
+    </ul>
+  </div>
+
+  <div class="btn-group">
+    <button onclick="populateYears()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+     Año
+    </button>
+    <ul class="dropdown-menu" role="menu" id="YearSelect">
+    </ul>
+  </div>
+
+</div> -->
+
+<form enctype="multipart/form-data" action="{{=URL('estadisticas', 'setMonthYear')}}" method="post">
+  
+  <select name="month" id="MonthSelect">
+  </select>
+  
+  <select name="year" id="YearSelect">
+  </select>
+
+  <input type="submit"></input>
+</form>
+</body>
+
 <!-- Here, data and options same for both charts -->
 <!-- user_signature works if using logged-in users ... not well tested -->
-{{ data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True)
+{{
+  args = request.args
+  title = 'Relacion de Solicitudes de Mantenimiento de Planta Fisica ('
+  if len(args) > 0:
+    data = {
+      'year': args[0],
+      'month': args[1]
+    }
+    title += str(args[1]) + ', ' + str(args[0]) + ')'
+  else:
+    data = {}
+    title += 'totales)'
+  pass
+
+  data_url = URL('plugin_google_chart','plugin_return_data.json', user_signature=True)
+  submitted_data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True, vars=dict(data))
   #options are documented at https://developers.google.com/chart/
-  options ={'title':'Relacion de Solicitudes de Mantenimiento de Planta Fisica','width':1000,'height':1200}
-          }}
- 
-
- 
-<div class="span6">
-{{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
-    vars={'type':'column','data_url':data_url,'options_dict':options})
+  options ={'title': title,'width':1000,'height':1200}
+          
 }}
-</div>
 
+<div class="span6">
+{{if len(args) == 0:}}
+  {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
+      vars={'type':'column','data_url':data_url,'options_dict':options})
+  }}
+{{else:}}
+  {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
+      vars={'type':'column','data_url':submitted_data_url,'options_dict':options})
+  }}
+{{pass}}
+</div>
 
 {{end}}
