@@ -52,8 +52,8 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == year)):
-                continue 
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': d['count(Solicitud.area)'],
@@ -105,13 +105,9 @@ def plugin_return_data():
     This can also use the @auth.requires_signature() decorator
     """
 
-
     args = request.vars
     month = args.month
     year = args.year
-    print "*************************************"
-    print month,year
-    print "*************************************"
 
     info = getData(month,year)
     data = [['Areas','Solicitadas','Solucionadas','Pendientes','Anuladas']]
@@ -125,8 +121,6 @@ def plugin_return_data():
         d.append(info[key]['anuladas'])
         data.append(d)
         
-    if (month and year):
-        redirect(URL('estadisticas','estadisticas', vars=dict(data=data)))
     return dict(data=data)
 
 

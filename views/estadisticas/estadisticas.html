@@ -8,51 +8,51 @@
 
 <script>
 
-    function populateMonths() {
-        var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
-        var month_element = document.getElementById("MonthSelect");
+  function populateMonths() {
+      var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      var month_element = document.getElementById("MonthSelect");
 
-        for (month in months) {
-            // a = document.createElement("a")
-            // li = document.createElement("li")
-            // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?month=" + months[month] )
-            // node = document.createTextNode(months[month])
-            // a.appendChild(node)
-            // li.appendChild(a)
-            // month_element.appendChild(li)
-            option = document.createElement('option');
-            option.value = months[month];
-            option.textContent = months[month];
-            month_element.appendChild(option);
-        }
-    }
+      for (month in months) {
+          // a = document.createElement("a")
+          // li = document.createElement("li")
+          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?month=" + months[month] )
+          // node = document.createTextNode(months[month])
+          // a.appendChild(node)
+          // li.appendChild(a)
+          // month_element.appendChild(li)
+          option = document.createElement('option');
+          option.value = months[month];
+          option.textContent = months[month];
+          month_element.appendChild(option);
+      }
+  }
 
-    function populateYears() {
-        var maxYear = new Date().getFullYear();
-        var minYear = maxYear - 9;
-        year_element = document.getElementById("YearSelect");
+  function populateYears() {
+      var maxYear = new Date().getFullYear();
+      var minYear = maxYear - 9;
+      year_element = document.getElementById("YearSelect");
 
-        for (i = minYear; i <= maxYear; i++) {
-            // a = document.createElement("a");
-            // li = document.createElement("li");
-            // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?year=" + i);
-            // node = document.createTextNode(i.toString());
-            // a.appendChild(node);
-            // li.appendChild(a);
-            // year_element.appendChild(li);
-            option = document.createElement('option');
-            option.value = i;
-            option.textContent = i;
-            year_element.appendChild(option);
-        }
-    }
+      for (i = minYear; i <= maxYear; i++) {
+          // a = document.createElement("a");
+          // li = document.createElement("li");
+          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?year=" + i);
+          // node = document.createTextNode(i.toString());
+          // a.appendChild(node);
+          // li.appendChild(a);
+          // year_element.appendChild(li);
+          option = document.createElement('option');
+          option.value = i;
+          option.textContent = i;
+          year_element.appendChild(option);
+      }
+  }
 
-    window.onload = function(){
-      populateMonths();
-      populateYears()
-    }
+  window.onload = function(){
+    populateMonths();
+    populateYears()
+  }
 
-  </script>
+</script>
 
 <body>
 
@@ -76,7 +76,7 @@
 
 </div> -->
 
-<form enctype="multipart/form-data" action="{{=URL('plugin_google_chart', 'plugin_return_data')}}" method="post">
+<form enctype="multipart/form-data" action="{{=URL('estadisticas', 'setMonthYear')}}" method="post">
   
   <select name="month" id="MonthSelect">
   </select>
@@ -86,20 +86,38 @@
 
   <input type="submit"></input>
 </form>
-
 </body>
 
 <!-- Here, data and options same for both charts -->
 <!-- user_signature works if using logged-in users ... not well tested -->
-{{ data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True)
+{{
+  args = request.args
+  if len(args) > 0:
+    data = {
+      'year': args[0],
+      'month': args[1]
+    }
+  else:
+    data = {}
+  pass
+
+  data_url = URL('plugin_google_chart','plugin_return_data.json', user_signature=True)
+  submitted_data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True, vars=dict(data))
   #options are documented at https://developers.google.com/chart/
   options ={'title':'Relacion de Solicitudes de Mantenimiento de Planta Fisica','width':1000,'height':1200}
-          }}
+          
+}}
 
 <div class="span6">
-{{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
-    vars={'type':'column','data_url':data_url,'options_dict':options})
-}}
+{{if len(args) == 0:}}
+  {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
+      vars={'type':'column','data_url':data_url,'options_dict':options})
+  }}
+{{else:}}
+  {{=LOAD('plugin_google_chart','plugin_google_chart.load',user_signature=True,ajax=True,
+      vars={'type':'column','data_url':submitted_data_url,'options_dict':options})
+  }}
+{{pass}}
 </div>
 
 {{end}}
