@@ -65,7 +65,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == year)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -81,7 +81,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == year)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
