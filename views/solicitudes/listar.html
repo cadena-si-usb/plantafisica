@@ -107,7 +107,7 @@
                                    title="Ver Requerimiento"></a>
                                 <div id="{{=solicitud.id}}" class="collapse">{{=solicitud.requerimiento}}</div>
                             </td>
-                            <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area.nombre_area else 'Por Asignar'}}</td>
+                            <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar'}}</td>
                             <td class='text-center'>{{=solicitud.edificio.nombre_edificio}}</td>
                             <td class='text-center'>{{=solicitud.status}}</td>
                             {{if (session.usuario['tipo'] != "S"): }}
