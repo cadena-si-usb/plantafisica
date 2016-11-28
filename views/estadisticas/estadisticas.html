@@ -85,8 +85,16 @@
   </select>
 
   <input type="submit"></input>
+
+  <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=request.vars.year}}/{{=request.vars.month}}'
+                                       class="fa fa-lg fa-print yellow" title="Imprimir Estadisticas"></a>
+
 </form>
+
+
+
 </body>
+
 
 <!-- Here, data and options same for both charts -->
 <!-- user_signature works if using logged-in users ... not well tested -->
@@ -107,7 +115,7 @@
   data_url = URL('plugin_google_chart','plugin_return_data.json', user_signature=True)
   submitted_data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True, vars=dict(data))
   #options are documented at https://developers.google.com/chart/
-  options ={'title': title,'width':1000,'height':1200}
+  options ={'title': title,'width':1600,'height':800}
           
 }}
 
