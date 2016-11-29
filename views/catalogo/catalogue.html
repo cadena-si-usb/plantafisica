@@ -545,6 +545,7 @@
                         <p>Lista de los estatus</p>
                     </div>
                 </div>
+                {{if session.usuario['tipo'] == "Admin":}}
                 <div class="row">
                     <div class="moveDivRight">
                         <a href="#agregarEstado" class="notif_link_but" data-toggle="modal" data-target="#agregarEstado">
@@ -555,6 +556,7 @@
                         </a>
                     </div>
                 </div>
+                {{pass}}
             </center>
 
             <table class="table table-hover table-striped borde-tabla" id="tablaEstado">
