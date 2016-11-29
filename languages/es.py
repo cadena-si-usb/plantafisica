@@ -176,6 +176,7 @@
 'El empleado fue modificado exitosamente!': 'El empleado fue modificado exitosamente!',
 'El material fue agregado exitosamente!': 'El material fue agregado exitosamente!',
 'El material fue modificado exitosamente!': 'El material fue modificado exitosamente!',
+'El telefono debe ser una extension: XXXX o un telefono con el formato: YYYY-XXXXXXX': 'El telefono debe ser una extension: XXXX o un telefono con el formato: YYYY-XXXXXXX',
 'El usuario fue agregado exitosamente': 'El usuario fue agregado exitosamente',
 'El usuario fue Crear exitosamente': 'El usuario fue Crear exitosamente',
 'El usuario fue modificado exitosamente!': 'El usuario fue modificado exitosamente!',
