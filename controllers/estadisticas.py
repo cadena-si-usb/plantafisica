@@ -12,7 +12,7 @@ def index():
     return locals()
 
 def estadisticas():
-  data = {} 
+  data = {}
   return dict(data=data)
 
 def setMonthYear():
@@ -84,7 +84,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': 0,
@@ -107,7 +107,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -130,7 +130,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -153,7 +153,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -176,7 +176,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -199,7 +199,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -222,7 +222,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -245,7 +245,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -268,7 +268,7 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
@@ -289,7 +289,7 @@ def getData(month,year):
 
     for key in data.keys():
         data[key]['efectividad'] = (float(data[key]['realizadas']) / data[key]['totales']) * 100
-        
+
     return data
 
 def get_pdf():
@@ -307,7 +307,7 @@ def get_pdf():
             [''],
             ['AREA', 'SOLICITADAS', 'SOLUCIONADAS', 'PENDIENTES', 'ANULADAS',  'EFECTIVIDAD(%)']
            ]
-    
+
 
     vrs = request.args
     if len(request.args) == 0 :
@@ -315,15 +315,15 @@ def get_pdf():
         m = None
     else:
         y = str(vrs[0])
-        m = str(vrs[1]) 
+        m = str(vrs[1])
 
     table_data = getData(m,y)
 
     format_data = []
-    total_solicitadas = 0 
-    total_realizadas = 0 
-    total_pendientes = 0 
-    total_anuladas = 0 
+    total_solicitadas = 0
+    total_realizadas = 0
+    total_pendientes = 0
+    total_anuladas = 0
 
     for key in table_data:
         area = []
@@ -333,26 +333,25 @@ def get_pdf():
         area.append(str(table_data[key]['pendientes']))
         area.append(str(table_data[key]['anuladas']))
         area.append(str(table_data[key]['efectividad']))
-        
+
         total_solicitadas += table_data[key]['totales']
-        total_realizadas += table_data[key]['realizadas'] 
+        total_realizadas += table_data[key]['realizadas']
         total_pendientes += table_data[key]['pendientes']
         total_anuladas += table_data[key]['anuladas']
 
         format_data.append(area)
 
-    total_efectividad =  (float(total_realizadas) / total_solicitadas) * 100 
+    total_efectividad =  (float(total_realizadas) / total_solicitadas) * 100
 
     totales = [['TOTALES', str(total_solicitadas), str(total_realizadas), str(total_pendientes), str(total_anuladas),  str(total_efectividad) ]]
 
-    data += format_data 
+    data += format_data
     data += totales
     data += [['Observaciones','']]
 
-    t=Table(data,colWidths=3*cm, rowHeights=1*cm, style=None, splitByRow=1,
-            repeatRows=0, repeatCols=0, rowSplitRange=None, spaceBefore=None,
-            spaceAfter=None)
-    
+    t=Table(data,colWidths=3*cm, rowHeights=1*cm, splitByRow=1,
+            repeatRows=0, repeatCols=0)
+
     t.setStyle(TableStyle([
         ('FONTSIZE', (0,0), (4,3), 10),
         ('FONTSIZE', (1,4), (1,4), 20),
@@ -369,12 +368,12 @@ def get_pdf():
     t._rowHeights[2] = 0.5 * cm
     t._rowHeights[3] = 0.5 * cm
     t._rowHeights[-1] = 4 * cm
-    
+
 
     drawing = Drawing(400,200)
-  
+
     categories = []
-    data = [[],[],[],[]] 
+    data = [[],[],[],[]]
     categories = []
     max_x = 0
     steps = 0.5
@@ -396,7 +395,7 @@ def get_pdf():
     bc.height = 150
     bc.width = 510
     bc.data = data
-    bc.barSpacing = 1   
+    bc.barSpacing = 1
     bc.strokeColor = colors.black
     bc.valueAxis.valueMin = 0
     bc.valueAxis.valueMax = max_x
@@ -406,8 +405,8 @@ def get_pdf():
     bc.categoryAxis.labels.dy = -2
     bc.categoryAxis.labels.angle = 15
     bc.categoryAxis.categoryNames = categories
-    
-    
+
+
     for i in range(len(data)):
         bc.bars[(0,i)].fillColor = colors.blue
         bc.bars[(1,i)].fillColor = colors.green
@@ -420,7 +419,7 @@ def get_pdf():
     elements.append(t)
     elements.append(drawing)
     doc.build(elements)
-    
+
     data = open(tmpfilename,"rb").read()
     os.unlink(tmpfilename)
     response.headers['Content-Type']='application/pdf'
