@@ -86,9 +86,14 @@
 
   <input type="submit"></input>
 
-  <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=request.vars.year}}/{{=request.vars.month}}'
+  {{if len(request.args) == 0 :}}
+  <a href='/{{=request.application}}/{{=request.controller}}/get_pdf'
+                                       class="fa fa-lg fa-print yellow" title="Imprimir Estadisticas"></a>
+  {{else:}}
+  <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=request.args[0]}}/{{=request.args[1]}}'
                                        class="fa fa-lg fa-print yellow" title="Imprimir Estadisticas"></a>
 
+  {{pass}}
 </form>
 
 
