@@ -39,6 +39,8 @@ def agregar():
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Crear"
+    form.element('textarea[name=requerimiento]')['_style']='height:50px'
+    form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
 
     if form.process().accepted:
         #######################################################################
@@ -91,6 +93,8 @@ def modificar():
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Modificar"
+    form.element('textarea[name=requerimiento]')['_style']='height:50px'
+    form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
 
     if form.process().accepted:
         session.flash = T('Solicitud modificada exitosamente!')

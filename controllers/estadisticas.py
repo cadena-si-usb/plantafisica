@@ -117,12 +117,15 @@ def get_pdf():
            ]
     
 
-    vrs = request.vars
-    month = vrs.month
-    year = vrs.year
-    print month, year
+    vrs = request.args
+    if len(request.args) == 0 :
+        y = None
+        m = None
+    else:
+        y = str(vrs[0])
+        m = str(vrs[1]) 
 
-    table_data = getData(None,None)
+    table_data = getData(m,y)
 
     format_data = []
     total_solicitadas = 0 
@@ -182,7 +185,7 @@ def get_pdf():
     data = [[],[],[],[]] 
     categories = []
     max_x = 0
-    steps = 2
+    steps = 0.5
     for key in table_data.keys():
         categories.append(key)
         max_x = max(max_x,table_data[key]['totales'])
@@ -192,8 +195,8 @@ def get_pdf():
         data[3].append(table_data[key]['anuladas'])
         pass
 
-    
-    steps = max_x//(2)
+    steps = max_x / 10.0
+
 
     bc = VerticalBarChart()
     bc.x = -35
