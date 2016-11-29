@@ -18,6 +18,7 @@
 '(*) Persona Contacto': '(*) Persona Contacto',
 '(*) Prioridad': '(*) Prioridad',
 '(*) Requerimiento': '(*) Requerimiento',
+'(*) Telefono (Extensión)': '(*) Telefono (Extensión)',
 '(*) Tipo': '(*) Tipo',
 '(*) Unidad Solicitante': '(*) Unidad Solicitante',
 '(*) Vision': '(*) Vision',
