@@ -398,7 +398,7 @@ def get_pdf():
     bc.barSpacing = 1
     bc.strokeColor = colors.black
     bc.valueAxis.valueMin = 0
-    bc.valueAxis.valueMax = max_x
+    bc.valueAxis.valueMax = max_x*1.1
     bc.valueAxis.valueStep = steps
     bc.categoryAxis.labels.boxAnchor = 'ne'
     bc.categoryAxis.labels.dx = 8

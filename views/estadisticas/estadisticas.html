@@ -77,10 +77,10 @@
 </div> -->
 
 <form enctype="multipart/form-data" action="{{=URL('estadisticas', 'setMonthYear')}}" method="post">
-  
+
   <select name="month" id="MonthSelect">
   </select>
-  
+
   <select name="year" id="YearSelect">
   </select>
 
@@ -120,8 +120,8 @@
   data_url = URL('plugin_google_chart','plugin_return_data.json', user_signature=True)
   submitted_data_url = URL('plugin_google_chart','plugin_return_data.json',user_signature=True, vars=dict(data))
   #options are documented at https://developers.google.com/chart/
-  options ={'title': title,'width':1600,'height':800}
-          
+  options ={'title': title,'width':800,'height':400}
+
 }}
 
 <div class="span6">
