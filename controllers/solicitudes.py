@@ -28,7 +28,7 @@ def show():
 def agregar():
     if session.usuario['tipo'] == "S":
       form = SQLFORM( db.Solicitud, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'edificio','espacio', 'telefono', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
       form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
