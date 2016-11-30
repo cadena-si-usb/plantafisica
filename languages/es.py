@@ -302,6 +302,7 @@
 'lost password?': '¿olvidó la contraseña?',
 'Main Menu': 'Menú principal',
 'Manage Cache': 'Gestionar la Caché',
+'Materiales': 'Materiales',
 'Menu Model': 'Modelo "menu"',
 'merge': 'combinar',
 'Models': 'Modelos',
