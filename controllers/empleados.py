@@ -54,11 +54,6 @@ def modificar():
     form.element(_type='submit')['_class']="btn form_submit " 
     form.element(_type='submit')['_value']="Modificar" 
     if form.process().accepted:
-        #######################################################################
-        if request.vars.estado != statAnt:
-            print(request.vars.nombre, request.vars.estado, statAnt)
-            appendToDbEmployee(request.vars.nombre, request.vars.cargo, area, request.vars.estado)
-        #######################################################################
         session.flash = T('El empleado fue modificado exitosamente!')
         redirect(URL('listar'))
     else:
