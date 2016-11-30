@@ -330,12 +330,12 @@ def get_pdf():
 
     for key in table_data:
         area = []
-        area.append(str(key))
-        area.append(str(table_data[key]['totales']))
-        area.append(str(table_data[key]['realizadas']))
-        area.append(str(table_data[key]['pendientes']))
-        area.append(str(table_data[key]['anuladas']))
-        area.append(str(table_data[key]['efectividad']))
+        area.append(key)
+        area.append(table_data[key]['totales'])
+        area.append(table_data[key]['realizadas'])
+        area.append(table_data[key]['pendientes'])
+        area.append(table_data[key]['anuladas'])
+        area.append(table_data[key]['efectividad'])
 
         total_solicitadas += table_data[key]['totales']
         total_realizadas += table_data[key]['realizadas']

@@ -213,13 +213,13 @@ def send_mail(name, code, maile, estado = None, observacion = None):
     else:
         mensaje = db(db.Notificacion_plantillas.id == 5).select()[0]
         mensaje = str(mensaje['mensaje'])
-        mensaje = mensaje.replace("%nombre%", name)
-        mensaje = mensaje.replace("%id%", str(code))
+        mensaje = mensaje.replace("%nombre%", "<b>"+name+"</b>")
+        mensaje = mensaje.replace("%id%", "<b>"+str(code)+"</b>")
 
         mail.send(to=[maile],
                   subject='Solicitud recibida: #' + str(code),
                   reply_to='cybertechsolts@gmail.com',
-                  message=mensaje
+                  message=(None,mensaje)
                   )
     # return dict()
 
