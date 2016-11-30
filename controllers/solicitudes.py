@@ -25,16 +25,26 @@ def show():
     sol = db(db.Solicitud.id == request.args[0]).select()[0]
     return dict(sol=sol)
 
+def validacionesExtras(form):
+  # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
+  if form.vars.fecha_inicio > form.vars.fecha_culminacion:
+    form.errors.fecha_culminacion = "Fecha de culminacion debe ser despues de fecha de inicio"
+
+  # Validar que el lugar pertenece a ese edificio
+  lugar = db(db.Lugar.id == form.vars.espacio).select()[0]
+  if form.vars.edificio != lugar.edificio:
+    form.errors.espacio = "El Espacio no corresponde al edificio"
 
 def agregar():
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+      form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto',
+                                            'edificio','espacio', 'telefono', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
       form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
                                             'edificio','espacio', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
+
     form.vars.USBID = session.usuario['usbid']
     #form.fields[usbid] = session.usuario['usbid']
     form.element(_id='submit_record__row')['_class'] += " text-center"
@@ -43,7 +53,8 @@ def agregar():
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
 
-    if form.process().accepted:
+
+    if form.process(onvalidation=validacionesExtras).accepted:
         #######################################################################
         #################### ENVIO DEL CORREO DE SOLICITUD ####################
         idSol = db(db.Solicitud).select(db.Solicitud.ALL).as_list()[-1]['id']
@@ -281,5 +292,3 @@ def buscador():
         else:
             response.flash = T('No se encontro ninguna solicitud con ese ID')
     return locals()
-
-

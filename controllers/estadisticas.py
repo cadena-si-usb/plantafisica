@@ -12,7 +12,7 @@ def index():
     return locals()
 
 def estadisticas():
-  data = {} 
+  data = {}
   return dict(data=data)
 
 def setMonthYear():
@@ -23,9 +23,19 @@ def setMonthYear():
 
 
 def getData(month,year):
+    esperando_c = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando Compra de Materiales por DPF' GROUP BY Solicitud.area;", as_dict = True)
+    esperando_a = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando aporte de materiales por parte de usuario' GROUP BY Solicitud.area;", as_dict = True)
+    listos = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Listo' GROUP BY Solicitud.area;", as_dict = True)
+    no_proceden = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'No procede' GROUP BY Solicitud.area;", as_dict = True)
+    orden_asignadas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Orden Asignada' GROUP BY Solicitud.area;", as_dict = True)
+    orden_por_asignar = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Orden Por Asignar' GROUP BY Solicitud.area;", as_dict = True)
+    realizada_p_c = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada por contratista' GROUP BY Solicitud.area;", as_dict = True)
     pendientes = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Pendiente' GROUP BY Solicitud.area;", as_dict = True)
     realizadas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
     anuladas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
+
+
+    print db.executesql("SELECT  * FROM Status_solicitud")
 
     isNone = False
 
@@ -49,8 +59,9 @@ def getData(month,year):
 
     data = {}
     for d in realizadas:
+        print d
         if not isNone:
-            yr = d['fecha_realizacion'].year
+            yr = d['fecha_realizacion'].yea
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
                 continue
@@ -59,6 +70,13 @@ def getData(month,year):
                 'realizadas': d['count(Solicitud.area)'],
                 'pendientes': 0,
                 'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
                 'totales': d['count(Solicitud.area)'],
             }
     for d in pendientes:
@@ -66,12 +84,19 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'realizadas': 0,
                 'anuladas': 0,
                 'pendientes': d['count(Solicitud.area)'],
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
                 'totales': d['count(Solicitud.area)'],
             }
         else:
@@ -82,23 +107,190 @@ def getData(month,year):
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
             if not ((months[mnth] == month) and (yr == int(year))):
-                continue 
+                continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
                 'pendientes': 0,
                 'realizadas': 0,
                 'anuladas': d['count(Solicitud.area)'],
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
                 'totales': d['count(Solicitud.area)'],
             }
         else:
             data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
             data[d['nombre_area']]['anuladas'] = d['count(Solicitud.area)']
+    for d in esperando_c:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': d['count(Solicitud.area)'],
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['esperando_c'] = d['count(Solicitud.area)']
+    for d in esperando_a:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': d['count(Solicitud.area)'],
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['esperando_a'] = d['count(Solicitud.area)']
+    for d in listos:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': d['count(Solicitud.area)'],
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['listos'] = d['count(Solicitud.area)']
+    for d in no_proceden:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': d['count(Solicitud.area)'],
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['no_proceden'] = d['count(Solicitud.area)']
+    for d in orden_asignadas:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': d['count(Solicitud.area)'],
+                'orden_por_asignar': 0,
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['orden_asignadas'] = d['count(Solicitud.area)']
+    for d in orden_por_asignar:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': d['count(Solicitud.area)'],
+                'realizada_p_c': 0,
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['orden_por_asignar'] = d['count(Solicitud.area)']
+    for d in realizada_p_c:
+        if not isNone:
+            yr = d['fecha_realizacion'].year
+            mnth = d['fecha_realizacion'].month
+            if not ((months[mnth] == month) and (yr == int(year))):
+                continue
+        if d['nombre_area'] not in data.keys():
+            data[d['nombre_area']] = {
+                'pendientes': 0,
+                'realizadas': 0,
+                'anuladas': 0,
+                'esperando_c': 0,
+                'esperando_a': 0,
+                'listos': 0,
+                'no_proceden': 0,
+                'orden_asignadas': 0,
+                'orden_por_asignar': 0,
+                'realizada_p_c': d['count(Solicitud.area)'],
+                'totales': d['count(Solicitud.area)'],
+            }
+        else:
+            data[d['nombre_area']]['totales'] += d['count(Solicitud.area)']
+            data[d['nombre_area']]['realizada_p_c'] = d['count(Solicitud.area)']
 
     for key in data.keys():
         data[key]['efectividad'] = (float(data[key]['realizadas']) / data[key]['totales']) * 100
-        
-    return data
 
+    return data
 
 def get_pdf():
     tmpfilename=os.path.join(request.folder,'private',str(uuid4()))
@@ -115,7 +307,7 @@ def get_pdf():
             [''],
             ['AREA', 'SOLICITADAS', 'SOLUCIONADAS', 'PENDIENTES', 'ANULADAS',  'EFECTIVIDAD(%)']
            ]
-    
+
 
     vrs = request.args
     if len(request.args) == 0 :
@@ -123,15 +315,15 @@ def get_pdf():
         m = None
     else:
         y = str(vrs[0])
-        m = str(vrs[1]) 
+        m = str(vrs[1])
 
     table_data = getData(m,y)
 
     format_data = []
-    total_solicitadas = 0 
-    total_realizadas = 0 
-    total_pendientes = 0 
-    total_anuladas = 0 
+    total_solicitadas = 0
+    total_realizadas = 0
+    total_pendientes = 0
+    total_anuladas = 0
 
     for key in table_data:
         area = []
@@ -141,26 +333,25 @@ def get_pdf():
         area.append(str(table_data[key]['pendientes']))
         area.append(str(table_data[key]['anuladas']))
         area.append(str(table_data[key]['efectividad']))
-        
+
         total_solicitadas += table_data[key]['totales']
-        total_realizadas += table_data[key]['realizadas'] 
+        total_realizadas += table_data[key]['realizadas']
         total_pendientes += table_data[key]['pendientes']
         total_anuladas += table_data[key]['anuladas']
 
         format_data.append(area)
 
-    total_efectividad =  (float(total_realizadas) / total_solicitadas) * 100 
+    total_efectividad =  (float(total_realizadas) / total_solicitadas) * 100
 
     totales = [['TOTALES', str(total_solicitadas), str(total_realizadas), str(total_pendientes), str(total_anuladas),  str(total_efectividad) ]]
 
-    data += format_data 
+    data += format_data
     data += totales
     data += [['Observaciones','']]
 
-    t=Table(data,colWidths=3*cm, rowHeights=1*cm, style=None, splitByRow=1,
-            repeatRows=0, repeatCols=0, rowSplitRange=None, spaceBefore=None,
-            spaceAfter=None)
-    
+    t=Table(data,colWidths=3*cm, rowHeights=1*cm, splitByRow=1,
+            repeatRows=0, repeatCols=0)
+
     t.setStyle(TableStyle([
         ('FONTSIZE', (0,0), (4,3), 10),
         ('FONTSIZE', (1,4), (1,4), 20),
@@ -177,12 +368,12 @@ def get_pdf():
     t._rowHeights[2] = 0.5 * cm
     t._rowHeights[3] = 0.5 * cm
     t._rowHeights[-1] = 4 * cm
-    
+
 
     drawing = Drawing(400,200)
-  
+
     categories = []
-    data = [[],[],[],[]] 
+    data = [[],[],[],[]]
     categories = []
     max_x = 0
     steps = 0.5
@@ -204,18 +395,18 @@ def get_pdf():
     bc.height = 150
     bc.width = 510
     bc.data = data
-    bc.barSpacing = 1   
+    bc.barSpacing = 1
     bc.strokeColor = colors.black
     bc.valueAxis.valueMin = 0
-    bc.valueAxis.valueMax = max_x
+    bc.valueAxis.valueMax = max_x*1.1
     bc.valueAxis.valueStep = steps
     bc.categoryAxis.labels.boxAnchor = 'ne'
     bc.categoryAxis.labels.dx = 8
     bc.categoryAxis.labels.dy = -2
     bc.categoryAxis.labels.angle = 15
     bc.categoryAxis.categoryNames = categories
-    
-    
+
+
     for i in range(len(data)):
         bc.bars[(0,i)].fillColor = colors.blue
         bc.bars[(1,i)].fillColor = colors.green
@@ -228,7 +419,7 @@ def get_pdf():
     elements.append(t)
     elements.append(drawing)
     doc.build(elements)
-    
+
     data = open(tmpfilename,"rb").read()
     os.unlink(tmpfilename)
     response.headers['Content-Type']='application/pdf'
