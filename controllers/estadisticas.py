@@ -6,7 +6,7 @@ from uuid import uuid4
 import os
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
-from gluon.serializers import json
+import json
 
 def index():
     redirect(URL('estadisticas'))
@@ -15,9 +15,12 @@ def index():
 def estadisticas():
     data = {}
     names = db.executesql("SELECT Area.nombre_area FROM Area;");
-    areas = []
+    areas = {}
+    i = 0
     for a in names:
-        areas.append(json(a)[2:-2].encode())
+        areas[i] = a
+        i += 1
+    areas = json.dumps(areas)
     return dict(data=data,areas=areas)
 
 def setMonthYearArea():

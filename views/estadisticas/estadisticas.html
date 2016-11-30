@@ -11,10 +11,11 @@
   function populateAreas() {
     var areas = {{=XML(areas)}}
     var area_element = document.getElementById("AreaSelect");
-    for (var i = 0; i < areas.length; i++) {
+    for (area in areas) {
+        console.log("AREAAAAAAAAAAA", area);
         option = document.createElement('option');
-        option.value = areas[i];
-        option.textContent = areas[i];
+        option.value = areas[area];
+        option.textContent = areas[area];
         area_element.appendChild(option);
     }
   }
