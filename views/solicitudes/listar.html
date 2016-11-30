@@ -19,7 +19,6 @@
                 null,
                 { "orderable": false },
                 { "orderable": false },
-                { "orderable": false },
                 { "orderable": false }
             ],
             responsive: true,
@@ -69,7 +68,7 @@
 
                     <div class="col-xs-4 col-xs-offset-8 col-sm-2 col-sm-offset-10 text-right">
                         <a class="notif_link_but" title="Crear Solicitud" role='button' href="{{=URL('solicitudes', 'agregar')}}">
-                            <span><i class="fa fa-plus fa-2x yellow"> Crear</i></span>
+                            <h3><i class="fa fa-plus fa-lg yellow"></i> Crear</h3>
                         </a>
                     </div>
 
@@ -88,12 +87,8 @@
                             <th class='text-center'>Requerimiento</th>
                             <th class='text-center'>Area</th>
                             <th class='text-center'>Edificio</th>
+                            <th class='text-center'>Espacio</th>
                             <th class='text-center'>Estado</th>
-                            {{if session.usuario['tipo'] != "S":}}
-                                <th class='text-center'>Editar</th>
-                                <th class='text-center'>Imprimir</th>
-                            {{else:}}
-                            {{pass}}
                         </tr>
                     </thead>
 
@@ -109,17 +104,8 @@
                             </td>
                             <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar'}}</td>
                             <td class='text-center'>{{=solicitud.edificio.nombre_edificio}}</td>
+                            <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
                             <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por Asignar'}}</td>
-                            {{if (session.usuario['tipo'] != "S"): }}
-                                <td class='text-center'>
-                                    <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=solicitud.id}}' class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=solicitud.id}}"></a>
-                                </td>
-                                <td class='text-center'>
-                                    <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=solicitud.id}}'
-                                       class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=solicitud.id}}"></a>
-                                </td>
-                            {{else:}}
-                            {{pass}}
                         </tr>
                         {{ pass }}
                     </tbody>
