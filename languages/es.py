@@ -331,6 +331,7 @@
 'No se encontro ninguna solicitud con ese ID': 'No se encontro ninguna solicitud con ese ID',
 'No se ha podido crear una Lugar.': 'No se ha podido crear una Lugar.',
 'No se ha podido crear una Unidad Métrica': 'No se ha podido crear una Unidad Métrica',
+'No se permiten mas de 140 caracteres.': 'No se permiten mas de 140 caracteres.',
 'Nombre ya                    esta almacenado, introduzca otro o modifique el anterior.': 'Nombre ya                    esta almacenado, introduzca otro o modifique el anterior.',
 'Nombre ya almacenado, introduzca otro o modifique el anterior.': 'Nombre ya almacenado, introduzca otro o modifique el anterior.',
 'Not authorized': 'No autorizado',

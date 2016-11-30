@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from reportlab.platypus import *
+from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.lib import colors
 from uuid import uuid4
@@ -121,7 +122,8 @@ def modificar():
             idSol = solicitudAct['id']
             correo = solicitudAct['info_contacto']
             estado = solicitudAct['status']
-            send_mail(request.vars.nombre_contacto, idSol, correo, estado)
+            observacion = solicitudAct['observacion_solicitud']
+            send_mail(request.vars.nombre_contacto, idSol, correo, estado, observacion=observacion)
             db(db.Notificacion.id == query[0]['id']).update(fecha=now)
         #######################################################################
 
@@ -157,6 +159,12 @@ def get_pdf():
       trabajadores.append(solicitud.trabajador[2:4])
       trabajadores.append(solicitud.trabajador[4:6])
 
+    styles = getSampleStyleSheet()
+    text = Paragraph(solicitud.requerimiento,
+              styles['Normal'])
+    text2 = Paragraph(solicitud.observacion_solicitud,
+              styles['Normal'])
+
     data = [['UNIVERSIDAD SIMÓN BOLÍVAR\nVICERRECTORADO ADMINISTRATIVO\nDIRECCIÓN DE PLANTA FÍSICA\nUnidad de Atención e Inspección', '' , 'SOLICITUD DE SERVICIO DE LA DIRECCIÓN PLANTA FÍSICA', '', '', ''],
             [''],
             ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área de Trabajo: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
@@ -164,9 +172,9 @@ def get_pdf():
             ['Unidad Solicitante', '', 'Persona Contacto', '', 'Email de Contacto', ''],
             [solicitud.unidad.nombre_unidad, '', solicitud.nombre_contacto, '', solicitud.info_contacto, ''],
             ['Edificio', 'Espacio', 'Telefono', 'Requerimiento', '', ''],
-            [solicitud.edificio.nomenclatura, solicitud.espacio.espacio, solicitud.telefono, solicitud.requerimiento, '', ''],
+            [solicitud.edificio.nomenclatura, solicitud.espacio.espacio, solicitud.telefono, text, '', ''],
             ['Observaciones', '', '', '', 'Firma y Sello,\nUnidad de Atención e Inspección', ''],
-            [solicitud.observacion_solicitud, '', '', '', '', ''],
+            [text2, '', '', '', '', ''],
             ['Ejecución', '', '', '', '', ''],
             ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
             [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
@@ -188,6 +196,9 @@ def get_pdf():
             ['Observaciones de Usuario', '', 'Fecha', '', 'Firma', ''],
             ['', '', '', '', '', '']
            ]
+
+
+
     t=Table(data, 3*cm)
     t.setStyle(TableStyle([('SPAN', (0,0), (1,0)),
                            ('SPAN', (2,0), (5,0)),
@@ -201,7 +212,8 @@ def get_pdf():
                            ('SPAN', (0,4), (1,4)),
                            ('SPAN', (2,4), (3,4)),
                            ('SPAN', (4,4), (5,4)),
-                           ('SPAN', (0,5), (1,5)),
+                           ('SPAN', (0,5), (1,5)),#
+                           ('FONTSIZE', (0,5), (1,5), 6),
                            ('SPAN', (2,5), (3,5)),
                            ('SPAN', (4,5), (5,5)),
                            ('SPAN', (3,6), (5,6)),
@@ -212,6 +224,10 @@ def get_pdf():
                            ('SPAN', (4,9), (5,9)),
                            ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+                           ('ALIGN', (3,7), (3,7), 'LEFT'),
+                           ('VALIGN', (3,7), (3,7), 'TOP'),
+                           ('ALIGN', (0,9), (0,9), 'LEFT'),
+                           ('VALIGN', (0,9), (0,9), 'TOP'),
                            ('ALIGN', (3,3), (3,3), 'LEFT'),
                            ('FONTSIZE', (0,4), (3,4), 12),
                            ('FONTSIZE', (0,6), (3,6), 12),

@@ -188,22 +188,27 @@ def show_send_email():
 
     return dict(form=form)
 
-def send_mail(name, code, maile, estado = None):
+def send_mail(name, code, maile, estado = None, observacion = None):
     from gluon import current
+    import re
     db = current.db
 
     if estado:
         estado = estado['nombre_status']
         mensaje = db(db.Notificacion_plantillas.id == 7).select()[0]
         mensaje = str(mensaje['mensaje'])
-        mensaje = mensaje.replace("%nombre%", name)
-        mensaje = mensaje.replace("%id%", str(code))
-        mensaje = mensaje.replace("%estado%", estado)
-        
+        mensaje = mensaje.replace("%nombre%", "<b>"+name+"</b>")
+        mensaje = mensaje.replace("%id%", "<b>"+str(code)+"</b>")
+        mensaje = mensaje.replace("%estado%", "<b>"+estado+"</b>")
+        if observacion == None:
+            mensaje = mensaje.replace("mejor.","mejor.<b>Observación: Ninguna</b>") 
+        else:
+            mensaje = mensaje.replace("mejor.","mejor.<b>Observación: "+observacion+"</b>")
+
         mail.send(to=[maile],
                   subject='Estado de la Solicitud: #' + str(code),
                   reply_to='cybertechsolts@gmail.com',
-                  message=mensaje
+                  message=(None,mensaje)
                   )
     else:
         mensaje = db(db.Notificacion_plantillas.id == 5).select()[0]
