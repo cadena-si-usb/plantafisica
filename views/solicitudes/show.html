@@ -1,46 +1,110 @@
 {{extend 'layout.html'}}
 
 {{block content}}
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 rounded_border" >
-            <div class="row">
-                <table class='table table-hover borde-tabla table-striped' id="tabla_solicitudes">
-                    <thead>
-                        <tr>
-                            {{if session.usuario['tipo'] != 'S':}}
-                                <th class='text-center'>Prioridad</th>
-                                {{pass}}
-                            <th class='text-center'>Area</th>
-                            <th class='text-center'>Unidad</th>
-                            <th class='text-center'>Edificio</th>
-                            <th class='text-center'>Espacio</th>
-                            <th class='text-center'>Editar</th>
-                            <th class='text-center'>Imprimir</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{if session.usuario['tipo'] != 'S':}}
-                            <td class='text-center'>{{=sol.prioridad.nombre_prioridad}}</td>
-                            {{pass}}
-                        <td class='text-center'>{{=sol.area.nombre_area}}</td>
-                        <td class='text-center'>{{=sol.unidad.nombre_unidad}}</td>
-                        <td class='text-center'>{{=sol.edificio.nombre_edificio}}</td>
-                        <td class='text-center'>{{=sol.espacio.espacio}}</td>
-                        <td class='text-center'>
-                            <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=sol.id}}'
-                               class="fa fa-lg fa-pencil-square-o yellow" title="Modificar Solicitud {{=sol.id}}"></a>
-                        </td>
-                        <td class='text-center'>
-                            <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=sol.id}}'
-                               class="fa fa-lg fa-print yellow" title="Imprimir Solicitud {{=sol.id}}"></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+<style>
+requerimiento {
+    width: 10em;
+    border: 0px solid #000000;
+    word-wrap: break-word;
+}
+</style>
+            <div class="container-fluid">
+                <div class="row">
+                   <div class="col-lg-12 rounded_border" >
+                        <div class="rounded2" >
+                            <center>
+                                <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3>Datos Solicitud</h3>
+                                            <hr WIDTH="30%">
+                                            <br>
+                                        </div>
+                                </div>
+                                <br>
+                           </center>
+
+                            {{ if (solicitud != None): }}
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <a href='/{{=request.application}}/{{=request.controller}}/get_pdf/{{=solicitud.id}}' class="notif_link_but" title="Imprimir Solicitud {{=solicitud.id}}"> <i class="fa fa-lg fa-print"></i>Imprimir</a>
+                                </div>
+                                <div class="col-sm-1">
+                                    <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=solicitud.id}}' class="notif_link_but" title="Modificar Solicitud {{=solicitud.id}}"><i class="fa fa-lg fa-pencil-square-o"></i> Editar</a>
+                                </div>
+                            </div>
+
+                           <br>
+                           <div class="row">
+                                <div class="row">
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Prioridad:</label>
+                                            <p class="form-control-static col-sm-7"> {{=solicitud.prioridad.nombre_prioridad if solicitud.prioridad else 'Por Asignar'}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Fecha:</label>
+                                            <p class="form-control-static col-sm-7"> {{=solicitud.fecha_realizacion}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Area:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar' }}</p>
+                                        </div>
+                                   </div>
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Tipo:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.tipo if solicitud.tipo else 'Por Asignar' }}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Unidad:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.unidad.nombre_unidad}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Contacto:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.info_contacto}}</p>
+                                        </div>
+                                   </div>
+                                   <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Edificio::</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.edificio.nombre_edificio}}</p>
+                                        </div>
+                                   </div>
+                                    <div class="form-group">
+                                         <div class="row">
+                                            <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Espacio:</label>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.espacio.espacio}}</p>
+                                        </div>
+                                   </div>
+                                   {{ if (solicitud.telefono!= None): }}
+                                       <div class="form-group">
+                                             <div class="row">
+                                                <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Teléfono:</label>
+                                                <p class="form-control-static col-sm-7">{{=solicitud.telefono}}</p>
+                                            </div>
+                                       </div>
+                                   {{pass}}
+                                    {{ if (solicitud.requerimiento != ""): }}
+                                       <div class="form-group">
+                                             <div class="row">
+                                                <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Requerimiento:</label>
+                                                <p class="form-control-static col-sm-7 requerimiento">{{=solicitud.requerimiento}}</p>
+                                            </div>
+                                       </div>
+                                   {{pass}}
+                                </div>
+                            {{ pass }}
+                          </div>
+                       </div>
+                    </div>
+                </div>
             </div>
-            <br />
-        </div>
-    </div>
-</div>
 {{end}}

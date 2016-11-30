@@ -22,8 +22,8 @@ def index():
 
 
 def show():
-    sol = db(db.Solicitud.id == request.args[0]).select()[0]
-    return dict(sol=sol)
+    solicitud = db(db.Solicitud.id == request.args[0]).select()[0]
+    return dict(solicitud=solicitud)
 
 def validacionesExtras(form):
   # Validar que fecha de culminacion sea el mismo dia o despues del de inicio

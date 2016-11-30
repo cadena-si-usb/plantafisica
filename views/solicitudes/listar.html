@@ -95,7 +95,7 @@
                     <tbody>
                         {{ for solicitud in filas: }}
                         <tr>
-                            <td class='text-center'>{{=solicitud.id}}</td>
+                            <td class='text-center'><a href="{{=URL('solicitudes','show', args=solicitud.id)}}">S{{=solicitud.id}}</td>
                             <td class='text-center'>{{=solicitud.fecha_realizacion}}</td>
                             <td class='text-center'>
                                 <a class="fa fa-lg fa-eye yellow" data-toggle="collapse" href="#{{=solicitud.id}}"
