@@ -19,7 +19,6 @@
                 null,
                 { "orderable": false },
                 { "orderable": false },
-                { "orderable": false },
                 { "orderable": false }
             ],
             responsive: true,
@@ -88,6 +87,7 @@
                             <th class='text-center'>Requerimiento</th>
                             <th class='text-center'>Area</th>
                             <th class='text-center'>Edificio</th>
+                            <th class='text-center'>Espacio</th>
                             <th class='text-center'>Estado</th>
                         </tr>
                     </thead>
@@ -104,6 +104,7 @@
                             </td>
                             <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar'}}</td>
                             <td class='text-center'>{{=solicitud.edificio.nombre_edificio}}</td>
+                            <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
                             <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por Asignar'}}</td>
                         </tr>
                         {{ pass }}
