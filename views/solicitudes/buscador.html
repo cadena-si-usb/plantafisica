@@ -1,7 +1,7 @@
 {{extend 'layout.html'}}
 
 {{block content}}
-<style> 
+<style>
 requerimiento {
     width: 10em;
     border: 0px solid #000000;
@@ -62,7 +62,7 @@ requerimiento {
                                     <div class="form-group">
                                          <div class="row">
                                             <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Prioridad:</label>
-                                            <p class="form-control-static col-sm-7"> {{=solicitud.prioridad}}</p>
+                                            <p class="form-control-static col-sm-7"> {{=solicitud.prioridad.nombre_prioridad if solicitud.prioridad else 'Por Asignar'}}</p>
                                         </div>
                                    </div>
                                    <div class="form-group">
@@ -74,13 +74,13 @@ requerimiento {
                                    <div class="form-group">
                                          <div class="row">
                                             <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Area:</label>
-                                            <p class="form-control-static col-sm-7">{{=solicitud.area.nombre_area}}</p>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar' }}</p>
                                         </div>
                                    </div>
                                     <div class="form-group">
                                          <div class="row">
                                             <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Tipo:</label>
-                                            <p class="form-control-static col-sm-7">{{=solicitud.tipo}}</p>
+                                            <p class="form-control-static col-sm-7">{{=solicitud.tipo if solicitud.tipo else 'Por Asignar' }}</p>
                                         </div>
                                    </div>
                                    <div class="form-group">
