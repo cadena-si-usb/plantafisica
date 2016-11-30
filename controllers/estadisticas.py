@@ -6,23 +6,28 @@ from uuid import uuid4
 import os
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
+from gluon.serializers import json
 
 def index():
     redirect(URL('estadisticas'))
     return locals()
 
 def estadisticas():
-  data = {} 
-  return dict(data=data)
+    data = {}
+    names = db.executesql("SELECT Area.nombre_area FROM Area;");
+    areas = []
+    for a in names:
+        areas.append(json(a)[2:-2].encode())
+    return dict(data=data,areas=areas)
 
-def setMonthYear():
+def setMonthYearArea():
   vrs = request.vars
   month = vrs.month
   year = vrs.year
-  redirect(URL('estadisticas', args=[year, month]))
+  area = vrs.area
+  redirect(URL('estadisticas', args=[year, month, area]))
 
-
-def getData(month,year):
+def getData(month,year,area):
     esperando_c = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando Compra de Materiales por DPF' GROUP BY Solicitud.area;", as_dict = True)
     esperando_a = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando aporte de materiales por parte de usuario' GROUP BY Solicitud.area;", as_dict = True)
     listos = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Listo' GROUP BY Solicitud.area;", as_dict = True)
@@ -33,9 +38,6 @@ def getData(month,year):
     pendientes = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Pendiente' GROUP BY Solicitud.area;", as_dict = True)
     realizadas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Realizada' GROUP BY Solicitud.area;", as_dict = True)
     anuladas = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Anulada' GROUP BY Solicitud.area;", as_dict = True)
-
-
-    print db.executesql("SELECT  * FROM Status_solicitud")
 
     isNone = False
 
@@ -54,16 +56,15 @@ def getData(month,year):
         12: "Diciembre"
     }
 
-    if not (month and year):
+    if not (month and year and area):
         isNone = True
 
     data = {}
     for d in realizadas:
-        print d
         if not isNone:
-            yr = d['fecha_realizacion'].yea
+            yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -83,7 +84,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -106,7 +107,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -129,7 +130,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -152,7 +153,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -175,7 +176,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -198,7 +199,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -221,7 +222,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -244,7 +245,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -267,7 +268,7 @@ def getData(month,year):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year))):
+            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -313,11 +314,13 @@ def get_pdf():
     if len(request.args) == 0 :
         y = None
         m = None
+        a = None
     else:
         y = str(vrs[0])
-        m = str(vrs[1]) 
+        m = str(vrs[1])
+        a = str(vrs[2])
 
-    table_data = getData(m,y)
+    table_data = getData(m,y,a)
 
     format_data = []
     total_solicitadas = 0 

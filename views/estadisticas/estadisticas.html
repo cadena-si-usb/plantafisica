@@ -8,18 +8,21 @@
 
 <script>
 
+  function populateAreas() {
+    var areas = {{=XML(areas)}}
+    var area_element = document.getElementById("AreaSelect");
+    for (var i = 0; i < areas.length; i++) {
+        option = document.createElement('option');
+        option.value = areas[i];
+        option.textContent = areas[i];
+        area_element.appendChild(option);
+    }
+  }
+
   function populateMonths() {
       var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
       var month_element = document.getElementById("MonthSelect");
-
       for (month in months) {
-          // a = document.createElement("a")
-          // li = document.createElement("li")
-          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?month=" + months[month] )
-          // node = document.createTextNode(months[month])
-          // a.appendChild(node)
-          // li.appendChild(a)
-          // month_element.appendChild(li)
           option = document.createElement('option');
           option.value = months[month];
           option.textContent = months[month];
@@ -31,25 +34,23 @@
       var maxYear = new Date().getFullYear();
       var minYear = maxYear - 9;
       year_element = document.getElementById("YearSelect");
-
       for (i = minYear; i <= maxYear; i++) {
-          // a = document.createElement("a");
-          // li = document.createElement("li");
-          // a.setAttribute("href", "{{=URL('plugin_google_chart', 'getData')}}" + "?year=" + i);
-          // node = document.createTextNode(i.toString());
-          // a.appendChild(node);
-          // li.appendChild(a);
-          // year_element.appendChild(li);
           option = document.createElement('option');
-          option.value = i;
-          option.textContent = i;
+          // if (i == minYear-1) {
+          //   option.value = "-- Select --";
+          //   option.textContent = "-- Select --";
+          // } else {
+            option.value = i;
+            option.textContent = i;
+          // }
           year_element.appendChild(option);
       }
   }
 
   window.onload = function(){
+    populateAreas();
     populateMonths();
-    populateYears()
+    populateYears();
   }
 
 </script>
@@ -58,7 +59,7 @@
 
 <!-- <div class="btn-group">
  <div class="btn-group">
-    <button onclick="populateMonths()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <button onclick="populateMonths()" type="button" class="btn btn--- Select -- dropdown-toggle" data-toggle="dropdown">
       Mes
     </button>
     <ul class="dropdown-menu" role="menu" id="MonthSelect">
@@ -67,7 +68,7 @@
   </div>
 
   <div class="btn-group">
-    <button onclick="populateYears()" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+    <button onclick="populateYears()" type="button" class="btn btn--- Select -- dropdown-toggle" data-toggle="dropdown">
      Año
     </button>
     <ul class="dropdown-menu" role="menu" id="YearSelect">
@@ -76,12 +77,15 @@
 
 </div> -->
 
-<form enctype="multipart/form-data" action="{{=URL('estadisticas', 'setMonthYear')}}" method="post">
+<form enctype="multipart/form-data" action="{{=URL('estadisticas', 'setMonthYearArea')}}" method="post">
   
   <select name="month" id="MonthSelect">
   </select>
   
   <select name="year" id="YearSelect">
+  </select>
+
+  <select name="area" id="AreaSelect">
   </select>
 
   <input type="submit"></input>
@@ -109,9 +113,10 @@
   if len(args) > 0:
     data = {
       'year': args[0],
-      'month': args[1]
+      'month': args[1],
+      'area': args[2]
     }
-    title += str(args[1]) + ', ' + str(args[0]) + ')'
+    title += str(args[1]) + ', ' + str(args[0]) + ', ' + args[2] + ')'
   else:
     data = {}
     title += 'totales)'
