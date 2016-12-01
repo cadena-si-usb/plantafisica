@@ -167,13 +167,13 @@ def modificar():
 
     return locals()
 
-def get_trabajadores_pdf(trabajadores):
-  if(len(trabajadores) == 2):
-    return [trabajadores[0].nombre, '', '', trabajadores[1].nombre, '', '']
-  elif(len(trabajadores) == 1):
-    return [trabajadores[0].nombre, '', '', '', '', '']
-  else:
-    return ['', '', '', '', '', '']
+# def get_trabajadores_pdf(trabajadores):
+#   if(len(trabajadores) == 2):
+#     return [trabajadores[0].nombre, '', '', trabajadores[1].nombre, '', '']
+#   elif(len(trabajadores) == 1):
+#     return [trabajadores[0].nombre, '', '', '', '', '']
+#   else:
+#     return ['', '', '', '', '', '']
 
 
 
@@ -188,9 +188,7 @@ def get_pdf():
       trabajadores.append('')
       trabajadores.append('')
     else:
-      trabajadores.append(solicitud.trabajador[0:2])
-      trabajadores.append(solicitud.trabajador[2:4])
-      trabajadores.append(solicitud.trabajador[4:6])
+      trabajadores.append(solicitud.trabajador)
 
     styles = getSampleStyleSheet()
     text = Paragraph(solicitud.requerimiento,
@@ -212,9 +210,9 @@ def get_pdf():
             ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
             [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
             ['Trabajadores Asignados', '', '', '', '', ''],
-            get_trabajadores_pdf(trabajadores[0]),
-            get_trabajadores_pdf(trabajadores[1]),
-            get_trabajadores_pdf(trabajadores[2]),
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
             [''],
             ['Observaciones', '', '', '', 'Trabajo Terminado', ''],
             [solicitud.observacion_ejecucion, '', '', '', '', 'Terminado'],
