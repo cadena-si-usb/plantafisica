@@ -31,6 +31,14 @@ requerimiento {
                                 <div class="col-sm-1">
                                     <a href='/{{=request.application}}/{{=request.controller}}/modificar/{{=solicitud.id}}' class="notif_link_but" title="Modificar Solicitud {{=solicitud.id}}"><i class="fa fa-lg fa-pencil-square-o"></i> Editar</a>
                                 </div>
+                                <div class="col-sm-1">
+                                  <!-- <div class="moveDivRight"> -->
+                                    <a href="#agregarMaterial" class="notif_link_but" data-toggle="modal" data-target="#agregarMaterial">
+                                            <i class="fa fa-plus"></i>
+                                            Agregar Material
+                                    </a>
+                                  <!-- </div> -->
+                                </div>
                             </div>
 
                            <br>
@@ -100,6 +108,16 @@ requerimiento {
                                             </div>
                                        </div>
                                    {{pass}}
+                                       <div class="form-group">
+                                             <div class="row">
+                                                <label class="control-label col-sm-2 col-sm-offset-2" style="text-align:right;">Materiales:</label>
+                                                <div class="form-control-static col-sm-7 requerimiento">
+                                                  {{for material in materiales:}}
+                                                    <p>{{=material.material.nombre}}  {{=material.cantidad}} {{=material.material.unidad_metrica.nomenclatura}}</p>
+                                                  {{pass}}
+                                                </div>
+                                            </div>
+                                       </div>
                                 </div>
                             {{ pass }}
                           </div>
@@ -107,4 +125,23 @@ requerimiento {
                     </div>
                 </div>
             </div>
+
+<!-- Modal Agregar Edificio-->
+    <div id="agregarMaterial" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <center>
+                        <h4 class="modal-title">Agregar Material</h4>
+                    </center>
+                </div>
+                <div>
+                   <p class="campo-obligatorio" style="padding-right: 1cm;">Campo Obligatorio (*)</p>
+                </div>
+                {{=form}}
+            </div>
+        </div>
+    </div>
+
 {{end}}

@@ -20,10 +20,32 @@ def index():
     redirect(URL('listar'))
     return locals()
 
+def cantidadBuena(form):
+  material = db(db.Material.id == form.vars.material).select()[0]
+  if form.vars.cantidad > material.cantidad:
+    form.errors.cantidad = "No puedes exceder la cantidad de material disponible."
 
 def show():
     solicitud = db(db.Solicitud.id == request.args[0]).select()[0]
-    return dict(solicitud=solicitud)
+    materiales = db(db.Solicitud_Material.solicitud == solicitud.id).select()
+
+    form = SQLFORM( db.Solicitud_Material, fields=['material', 'cantidad'])
+    form.vars.solicitud = int(request.args[0])
+    form.element(_type='submit')['_class']="btn form_submit"
+    form.element(_type='submit')['_value']="Agregar"
+
+    if form.process(onvalidation=cantidadBuena).accepted:
+
+      material = db(db.Material.id == request.vars.material).select().first()
+      material.update_record(cantidad = material.cantidad - long(request.vars.cantidad))
+
+      response.flash = T('Se ha agregado el material')
+    elif form.errors:
+      response.flash = T('Formulario tiene errores, por favor verifique todos los campos.')
+    else:
+      response.flash = T('Por favor llene la forma.')
+
+    return dict(solicitud=solicitud, form=form, materiales=materiales)
 
 def validacionesExtras(form):
   # Validar que fecha de culminacion sea el mismo dia o despues del de inicio

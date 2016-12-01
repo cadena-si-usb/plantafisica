@@ -61,7 +61,7 @@ db.define_table('Solicitud',
           type='text',
           label=T('(*) Requerimiento'),
           requires=[IS_NOT_EMPTY(error_message='Debe introducir algun requerimiento.'),
-                    IS_LENGTH(140, error_message='No se permiten mas de 140 caracteres.')]), 
+                    IS_LENGTH(140, error_message='No se permiten mas de 140 caracteres.')]),
     Field('observacion_solicitud',
           type='text',
           label=T('Observaciones'),
@@ -94,6 +94,27 @@ db.define_table('Solicitud',
     migrate=True
     )
 db.Solicitud.id.label=T('Numero de Solicitud')
+
+db.define_table('Solicitud_Material',
+    Field('solicitud',
+          db.Solicitud,
+          required = True,
+      ),
+    Field('material',
+          db.Material,
+          required = True,
+          requires = IS_IN_DB(db(db.Material.cantidad > 0), db.Material.id, '%(nombre)s',
+                      error_message="Debe seleccionar un material.")
+      ),
+    Field('cantidad',
+          type = 'integer',
+          required = True,
+          requires = IS_INT_IN_RANGE(1,None,
+                      error_message="Debe ser igual o mayor a 1.")
+      ),
+    migrate = True
+    )
+
 
 ################################################################################
 #                          FIN DECLARACION BASE DE DATOS                       #
