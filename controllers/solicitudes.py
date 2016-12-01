@@ -20,10 +20,32 @@ def index():
     redirect(URL('listar'))
     return locals()
 
+def cantidadBuena(form):
+  material = db(db.Material.id == form.vars.material).select()[0]
+  if form.vars.cantidad > material.cantidad:
+    form.errors.cantidad = "No puedes exceder la cantidad de material disponible."
 
 def show():
-    sol = db(db.Solicitud.id == request.args[0]).select()[0]
-    return dict(sol=sol)
+    solicitud = db(db.Solicitud.id == request.args[0]).select()[0]
+    materiales = db(db.Solicitud_Material.solicitud == solicitud.id).select()
+
+    form = SQLFORM( db.Solicitud_Material, fields=['material', 'cantidad'])
+    form.vars.solicitud = int(request.args[0])
+    form.element(_type='submit')['_class']="btn form_submit"
+    form.element(_type='submit')['_value']="Agregar"
+
+    if form.process(onvalidation=cantidadBuena).accepted:
+
+      material = db(db.Material.id == request.vars.material).select().first()
+      material.update_record(cantidad = material.cantidad - long(request.vars.cantidad))
+
+      response.flash = T('Se ha agregado el material')
+    elif form.errors:
+      response.flash = T('Formulario tiene errores, por favor verifique todos los campos.')
+    else:
+      response.flash = T('Por favor llene la forma.')
+
+    return dict(solicitud=solicitud, form=form, materiales=materiales)
 
 def validacionesExtras(form):
   # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
@@ -38,11 +60,11 @@ def validacionesExtras(form):
 def agregar():
     if session.usuario['tipo'] == "S":
       form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'requerimiento',
+                                            'edificio','ubicacion', 'telefono', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
       form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+                                            'edificio','espacio', 'ubicacion', 'telefono', 'vision', 'requerimiento',
                                             'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
 
     form.vars.USBID = session.usuario['usbid']
@@ -52,7 +74,10 @@ def agregar():
     form.element(_type='submit')['_value']="Crear"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
-
+    form.element(_name='telefono')['_style']='width:110px'
+    form.element(_name='fecha_inicio')['_style']= 'width:110px'
+    form.element(_name='fecha_culminacion')['_style']='width:110px'
+    form.element(_name='vision')['_style']='width:110px'
 
     if form.process(onvalidation=validacionesExtras).accepted:
         #######################################################################
@@ -95,18 +120,22 @@ def modificar():
     ###########################################################################
     record = db.Solicitud(request.args(0))
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, record = record, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
+      form = SQLFORM( db.Solicitud, record = record, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto', 'telefono',
+                                            'edificio','ubicacion', 'vision', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
-      form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'telefono', 'vision', 'requerimiento',
-                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
+      form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto','telefono',
+                                            'edificio','espacio', 'ubicacion', 'requerimiento',
+                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','vision' ,'status'] )
     form.element(_id='submit_record__row')['_class'] += " text-center"
     form.element(_type='submit')['_class']="btn form_submit"
     form.element(_type='submit')['_value']="Modificar"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
+    form.element(_name='telefono')['_style']='width:110px'
+    form.element(_name='fecha_inicio')['_style']= 'width:110px'
+    form.element(_name='fecha_culminacion')['_style']='width:110px'
+    form.element(_name='vision')['_style']='width:110px'
 
     if form.process().accepted:
         session.flash = T('Solicitud modificada exitosamente!')
