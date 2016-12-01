@@ -198,7 +198,7 @@ def get_pdf():
 
     data = [['UNIVERSIDAD SIMÓN BOLÍVAR\nVICERRECTORADO ADMINISTRATIVO\nDIRECCIÓN DE PLANTA FÍSICA\nUnidad de Atención e Inspección', '' , 'SOLICITUD DE SERVICIO DE LA DIRECCIÓN PLANTA FÍSICA', '', '', ''],
             [''],
-            ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área de Trabajo: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
+            ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
             [solicitud.tipo, '', '', 'Entregada a: ' + str(solicitud.supervisor), '', ''],
             ['Unidad Solicitante', '', 'Persona Contacto', '', 'Email de Contacto', ''],
             [solicitud.unidad.nombre_unidad, '', solicitud.nombre_contacto, '', solicitud.info_contacto, ''],
@@ -245,6 +245,7 @@ def get_pdf():
                            ('SPAN', (4,4), (5,4)),
                            ('SPAN', (0,5), (1,5)),#
                            ('FONTSIZE', (0,5), (1,5), 6),
+                           ('FONTSIZE', (2,2), (2,2), 7.75),
                            ('SPAN', (2,5), (3,5)),
                            ('SPAN', (4,5), (5,5)),
                            ('SPAN', (3,6), (5,6)),
