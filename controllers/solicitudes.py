@@ -48,14 +48,16 @@ def show():
     return dict(solicitud=solicitud, form=form, materiales=materiales)
 
 def validacionesExtras(form):
-  # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
-  if form.vars.fecha_inicio > form.vars.fecha_culminacion:
-    form.errors.fecha_culminacion = "Fecha de culminacion debe ser despues de fecha de inicio"
+  if session.usuario['tipo'] != "S":
+    # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
+    if form.vars.fecha_inicio > form.vars.fecha_culminacion:
+      form.errors.fecha_culminacion = "Fecha de culminacion debe ser despues de fecha de inicio"
 
-  # Validar que el lugar pertenece a ese edificio
-  lugar = db(db.Lugar.id == form.vars.espacio).select()[0]
-  if form.vars.edificio != lugar.edificio:
-    form.errors.espacio = "El Espacio no corresponde al edificio"
+    # Validar que el lugar pertenece a ese edificio
+
+    lugar = db(db.Lugar.id == form.vars.espacio).select()[0]
+    if form.vars.edificio != lugar.edificio:
+      form.errors.espacio = "El Espacio no corresponde al edificio"
 
 def agregar():
     if session.usuario['tipo'] == "S":
