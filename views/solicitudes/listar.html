@@ -110,10 +110,12 @@
                             </td>
                             <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar'}}</td>
                             <td class='text-center'>{{=solicitud.edificio.nomenclatura}}</td>
-                            {{if session.usuario['tipo'] != "S":}}
+                            {{if session.usuario['tipo'] != "S" and solicitud.espacio != None:}}
                                 <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
+                            {{else:}}
+                                <td class='text-center'>Por asignar</td>
                                 {{pass}}
-                            <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por Asignar'}}</td>
+                            <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por asignar'}}</td>
                            
                             {{if session.usuario['tipo'] != "S":}}
                                 {{if solicitud.trabajador == None:}}
