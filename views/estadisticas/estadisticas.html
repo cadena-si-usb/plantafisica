@@ -11,21 +11,25 @@
   function populateAreas() {
     var areas = {{=XML(areas)}}
     var area_element = document.getElementById("AreaSelect");
-    for (var i = 0; i < areas.length; i++) {
+    for (area in areas) {
         option = document.createElement('option');
-        option.value = areas[i];
-        option.textContent = areas[i];
+        option.value = areas[area];
+        option.textContent = areas[area];
         area_element.appendChild(option);
     }
   }
 
   function populateMonths() {
       var months = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      var current_month = new Date().getMonth();
       var month_element = document.getElementById("MonthSelect");
       for (month in months) {
           option = document.createElement('option');
           option.value = months[month];
           option.textContent = months[month];
+          if (month == current_month) {
+            option.selected = "selected";
+          }
           month_element.appendChild(option);
       }
   }
@@ -36,13 +40,11 @@
       year_element = document.getElementById("YearSelect");
       for (i = minYear; i <= maxYear; i++) {
           option = document.createElement('option');
-          // if (i == minYear-1) {
-          //   option.value = "-- Select --";
-          //   option.textContent = "-- Select --";
-          // } else {
-            option.value = i;
-            option.textContent = i;
-          // }
+          option.value = i;
+          option.textContent = i;
+          if (i == maxYear) {
+            option.selected = "selected";
+          }
           year_element.appendChild(option);
       }
   }

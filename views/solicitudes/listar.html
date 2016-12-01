@@ -82,13 +82,14 @@
 
                     <thead>
                         <tr>
-                            <th class='text-center'>Numero de Solicitud</th>
+                            <th class='text-center'>Solicitud</th>
                             <th class='text-center'>Fecha</th>
                             <th class='text-center'>Requerimiento</th>
                             <th class='text-center'>Area</th>
                             <th class='text-center'>Edificio</th>
                             <th class='text-center'>Espacio</th>
                             <th class='text-center'>Estado</th>
+                            <th class='text-center'>Supervisor</th>
                         </tr>
                     </thead>
 
@@ -106,6 +107,11 @@
                             <td class='text-center'>{{=solicitud.edificio.nomenclatura}}</td>
                             <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
                             <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por Asignar'}}</td>
+                            {{if solicitud.trabajador == None:}}
+                                <td class='text-center'>Ninguno</td>
+                            {{else:}}
+                                <td class='text-center'>{{=solicitud.trabajador.nombre}}</td>
+                                {{pass}}
                         </tr>
                         {{ pass }}
                     </tbody>
