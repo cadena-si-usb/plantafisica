@@ -59,13 +59,13 @@ def validacionesExtras(form):
 
 def agregar():
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','ubicacion', 'telefono', 'requerimiento',
+      form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto','telefono',
+                                            'edificio','ubicacion', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
-      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'ubicacion', 'telefono', 'vision', 'requerimiento',
-                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
+      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto','telefono',
+                                            'edificio','espacio', 'ubicacion', 'requerimiento',
+                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','vision', 'status'] )
 
     form.vars.USBID = session.usuario['usbid']
     #form.fields[usbid] = session.usuario['usbid']
@@ -74,10 +74,11 @@ def agregar():
     form.element(_type='submit')['_value']="Crear"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
-    form.element(_name='telefono')['_style']='width:110px'
-    form.element(_name='fecha_inicio')['_style']= 'width:110px'
-    form.element(_name='fecha_culminacion')['_style']='width:110px'
-    form.element(_name='vision')['_style']='width:110px'
+    form.element(_name='telefono')['_style']='width:130px'
+    if session.usuario['tipo'] !="S":
+      form.element(_name='fecha_inicio')['_style']= 'width:130px'
+      form.element(_name='fecha_culminacion')['_style']='width:130px'
+      form.element(_name='vision')['_style']='width:130px'
 
     if form.process(onvalidation=validacionesExtras).accepted:
         #######################################################################
@@ -120,8 +121,8 @@ def modificar():
     ###########################################################################
     record = db.Solicitud(request.args(0))
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, record = record, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto', 'telefono',
-                                            'edificio','ubicacion', 'vision', 'requerimiento',
+      form = SQLFORM( db.Solicitud, record = record, fields=['unidad', 'nombre_contacto', 'info_contacto', 'telefono',
+                                            'edificio','ubicacion', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
       form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto','telefono',
@@ -132,10 +133,11 @@ def modificar():
     form.element(_type='submit')['_value']="Modificar"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
-    form.element(_name='telefono')['_style']='width:110px'
-    form.element(_name='fecha_inicio')['_style']= 'width:110px'
-    form.element(_name='fecha_culminacion')['_style']='width:110px'
-    form.element(_name='vision')['_style']='width:110px'
+    form.element(_name='telefono')['_style']='width:130px'
+    if session.usuario['tipo'] !="S":
+      form.element(_name='fecha_inicio')['_style']= 'width:130px'
+      form.element(_name='fecha_culminacion')['_style']='width:130px'
+      form.element(_name='vision')['_style']='width:110px'
 
     if form.process().accepted:
         session.flash = T('Solicitud modificada exitosamente!')
