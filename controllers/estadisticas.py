@@ -30,7 +30,7 @@ def setMonthYearArea():
   area = vrs.area
   redirect(URL('estadisticas', args=[year, month, area]))
 
-def getData(month,year,area):
+def getData(month,year):
     esperando_c = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando Compra de Materiales por DPF' GROUP BY Solicitud.area;", as_dict = True)
     esperando_a = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Esperando aporte de materiales por parte de usuario' GROUP BY Solicitud.area;", as_dict = True)
     listos = db.executesql("SELECT Area.nombre_area, Solicitud.fecha_realizacion, count(Solicitud.area) FROM Solicitud, Area, Status_solicitud WHERE Solicitud.status = Status_solicitud.id AND Solicitud.area = Area.id AND Status_solicitud.nombre_status = 'Listo' GROUP BY Solicitud.area;", as_dict = True)
@@ -59,7 +59,7 @@ def getData(month,year,area):
         12: "Diciembre"
     }
 
-    if not (month and year and area):
+    if not (month and year):
         isNone = True
 
     data = {}
@@ -67,7 +67,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -87,7 +87,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -110,7 +110,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -133,7 +133,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -156,7 +156,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -179,7 +179,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -202,7 +202,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -225,7 +225,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -248,7 +248,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -271,7 +271,7 @@ def getData(month,year,area):
         if not isNone:
             yr = d['fecha_realizacion'].year
             mnth = d['fecha_realizacion'].month
-            if not ((months[mnth] == month) and (yr == int(year)) and (d['nombre_area'] == area)):
+            if not ((months[mnth] == month) and (yr == int(year))):
                 continue 
         if d['nombre_area'] not in data.keys():
             data[d['nombre_area']] = {
@@ -317,13 +317,11 @@ def get_pdf():
     if len(request.args) == 0 :
         y = None
         m = None
-        a = None
     else:
         y = str(vrs[0])
         m = str(vrs[1])
-        a = str(vrs[2])
 
-    table_data = getData(m,y,a)
+    table_data = getData(m,y)
 
     format_data = []
     total_solicitadas = 0

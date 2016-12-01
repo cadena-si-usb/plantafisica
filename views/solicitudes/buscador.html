@@ -25,7 +25,7 @@ requerimiento {
                                     <div id="buscador" class="center">
                                         <form class="form-inline form-inline-search" role="form">
                                             <div class="form-group form-inline-search-item">
-                                                <input class="form-control" id="usr" placeholder="Ingrese el ID de Solicitud" type="text" onkeypress="return validar_texto(event)">
+                                                <input class="form-control" id="usr" placeholder="Ingrese el ID de Solicitud" type="number" onkeypress="return validar_texto(event)">
                                             </div>
                                             <a type="submit" class="notif_link_but"  role="button" href="#" onclick="getOption()">
                                                 <h5 class="fa fa-search fa-lg yellow"></h5>
@@ -44,15 +44,10 @@ requerimiento {
                                 }
 
                                 function validar_texto(e){
-                                    tecla = (document.all) ? e.keyCode : e.which;
-                                    //Tecla de retroceso para borrar, siempre la permite
-                                    if (tecla==8){
-                                        return true;
+                                    if (e.keyCode === 13) {
+                                      e.preventDefault();
+                                      getOption();
                                     }
-                                    // Patron de entrada, en este caso solo acepta numeros
-                                    patron =/[#0-9]/;
-                                    tecla_final = String.fromCharCode(tecla);
-                                    return patron.test(tecla_final);
                                 }
                             </script>
                            <br>
