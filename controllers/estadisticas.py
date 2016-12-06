@@ -6,6 +6,7 @@ from uuid import uuid4
 import os
 from reportlab.graphics.shapes import Drawing
 from reportlab.graphics.charts.barcharts import VerticalBarChart
+from reportlab.lib.styles import getSampleStyleSheet
 import json
 
 def index():
@@ -331,7 +332,11 @@ def get_pdf():
 
     for key in table_data:
         area = []
-        area.append(str(key))
+
+        styles = getSampleStyleSheet()
+        text = Paragraph(str(key),
+              styles['Normal'])
+        area.append(text)
         area.append(str(table_data[key]['totales']))
         area.append(str(table_data[key]['realizadas']))
         area.append(str(table_data[key]['pendientes']))
@@ -359,7 +364,7 @@ def get_pdf():
     t.setStyle(TableStyle([
         ('FONTSIZE', (0,0), (4,3), 10),
         ('FONTSIZE', (1,4), (1,4), 20),
-        ('FONTSIZE', (0,6), (-1,-1), 9),
+        ('FONTSIZE', (1,4), (1,4), 20),
         ('SPAN', (1,-1), (-1,-1)),
         ('GRID', (0,6), (-1,-1), 0.25, colors.black),
         ('ALIGN',(0,6),(-1,-1),'CENTER'),

@@ -88,9 +88,13 @@
                             <th class='text-center'>Requerimiento</th>
                             <th class='text-center'>Area</th>
                             <th class='text-center'>Edificio</th>
-                            <th class='text-center'>Espacio</th>
+                            {{if session.usuario['tipo'] != "S":}}
+                                <th class='text-center'>Espacio</th>
+                            {{pass}}
                             <th class='text-center'>Estado</th>
-                            <th class='text-center'>Supervisor</th>
+                            {{if session.usuario['tipo'] != "S":}}
+                                <th class='text-center'>Supervisor</th>
+                            {{pass}}
                         </tr>
                     </thead>
 
@@ -106,12 +110,19 @@
                             </td>
                             <td class='text-center'>{{=solicitud.area.nombre_area if solicitud.area else 'Por Asignar'}}</td>
                             <td class='text-center'>{{=solicitud.edificio.nomenclatura}}</td>
-                            <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
-                            <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por Asignar'}}</td>
-                            {{if solicitud.trabajador == None:}}
-                                <td class='text-center'>Ninguno</td>
+                            {{if session.usuario['tipo'] != "S" and solicitud.espacio != None:}}
+                                <td class='text-center'>{{=solicitud.espacio.espacio}}</td>
                             {{else:}}
-                                <td class='text-center'>{{=solicitud.trabajador.nombre}}</td>
+                                <td class='text-center'>Por asignar</td>
+                                {{pass}}
+                            <td class='text-center'>{{=solicitud.status.nombre_status if solicitud.status else 'Por asignar'}}</td>
+                           
+                            {{if session.usuario['tipo'] != "S":}}
+                                {{if solicitud.trabajador == None:}}
+                                    <td class='text-center'>Ninguno</td>
+                                {{else:}}
+                                    <td class='text-center'>{{=solicitud.trabajador.nombre}}</td>
+                                    {{pass}}
                                 {{pass}}
                         </tr>
                         {{ pass }}
