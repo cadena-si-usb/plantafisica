@@ -137,7 +137,7 @@ def modificar():
     form.element(_name='fecha_culminacion')['_style']='width:110px'
     form.element(_name='vision')['_style']='width:110px'
 
-    if form.process().accepted:
+    if form.process(onvalidation=validacionesExtras).accepted:
         session.flash = T('Solicitud modificada exitosamente!')
 
         #######################################################################
