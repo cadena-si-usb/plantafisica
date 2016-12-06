@@ -48,24 +48,26 @@ def show():
     return dict(solicitud=solicitud, form=form, materiales=materiales)
 
 def validacionesExtras(form):
-  # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
-  if form.vars.fecha_inicio > form.vars.fecha_culminacion:
-    form.errors.fecha_culminacion = "Fecha de culminacion debe ser despues de fecha de inicio"
+  if session.usuario['tipo'] != "S":
+    # Validar que fecha de culminacion sea el mismo dia o despues del de inicio
+    if form.vars.fecha_inicio > form.vars.fecha_culminacion:
+      form.errors.fecha_culminacion = "Fecha de culminacion debe ser despues de fecha de inicio"
 
-  # Validar que el lugar pertenece a ese edificio
-  lugar = db(db.Lugar.id == form.vars.espacio).select()[0]
-  if form.vars.edificio != lugar.edificio:
-    form.errors.espacio = "El Espacio no corresponde al edificio"
+    # Validar que el lugar pertenece a ese edificio
+
+    lugar = db(db.Lugar.id == form.vars.espacio).select()[0]
+    if form.vars.edificio != lugar.edificio:
+      form.errors.espacio = "El Espacio no corresponde al edificio"
 
 def agregar():
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','ubicacion', 'telefono', 'requerimiento',
+      form = SQLFORM( db.Solicitud, fields=['unidad', 'nombre_contacto', 'info_contacto','telefono',
+                                            'edificio','ubicacion', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
-      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto',
-                                            'edificio','espacio', 'ubicacion', 'telefono', 'vision', 'requerimiento',
-                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','status'] )
+      form  = SQLFORM( db.Solicitud, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto','telefono',
+                                            'edificio','espacio', 'ubicacion', 'requerimiento',
+                                            'observacion_solicitud','fecha_inicio','fecha_culminacion','trabajador','vision', 'status'] )
 
     form.vars.USBID = session.usuario['usbid']
     #form.fields[usbid] = session.usuario['usbid']
@@ -74,10 +76,11 @@ def agregar():
     form.element(_type='submit')['_value']="Crear"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
-    form.element(_name='telefono')['_style']='width:110px'
-    form.element(_name='fecha_inicio')['_style']= 'width:110px'
-    form.element(_name='fecha_culminacion')['_style']='width:110px'
-    form.element(_name='vision')['_style']='width:110px'
+    form.element(_name='telefono')['_style']='width:130px'
+    if session.usuario['tipo'] !="S":
+      form.element(_name='fecha_inicio')['_style']= 'width:130px'
+      form.element(_name='fecha_culminacion')['_style']='width:130px'
+      form.element(_name='vision')['_style']='width:130px'
 
     if form.process(onvalidation=validacionesExtras).accepted:
         #######################################################################
@@ -120,8 +123,8 @@ def modificar():
     ###########################################################################
     record = db.Solicitud(request.args(0))
     if session.usuario['tipo'] == "S":
-      form = SQLFORM( db.Solicitud, record = record, fields=['tipo', 'unidad', 'nombre_contacto', 'info_contacto', 'telefono',
-                                            'edificio','ubicacion', 'vision', 'requerimiento',
+      form = SQLFORM( db.Solicitud, record = record, fields=['unidad', 'nombre_contacto', 'info_contacto', 'telefono',
+                                            'edificio','ubicacion', 'requerimiento',
                                             'observacion_solicitud'] )
     else :
       form  = SQLFORM( db.Solicitud, record = record, fields=['prioridad','area', 'tipo', 'unidad', 'nombre_contacto', 'info_contacto','telefono',
@@ -132,10 +135,11 @@ def modificar():
     form.element(_type='submit')['_value']="Modificar"
     form.element('textarea[name=requerimiento]')['_style']='height:50px'
     form.element('textarea[name=observacion_solicitud]')['_style']='height:50px'
-    form.element(_name='telefono')['_style']='width:110px'
-    form.element(_name='fecha_inicio')['_style']= 'width:110px'
-    form.element(_name='fecha_culminacion')['_style']='width:110px'
-    form.element(_name='vision')['_style']='width:110px'
+    form.element(_name='telefono')['_style']='width:130px'
+    if session.usuario['tipo'] !="S":
+      form.element(_name='fecha_inicio')['_style']= 'width:130px'
+      form.element(_name='fecha_culminacion')['_style']='width:130px'
+      form.element(_name='vision')['_style']='width:110px'
 
     if form.process(onvalidation=validacionesExtras).accepted:
         session.flash = T('Solicitud modificada exitosamente!')
@@ -163,13 +167,13 @@ def modificar():
 
     return locals()
 
-def get_trabajadores_pdf(trabajadores):
-  if(len(trabajadores) == 2):
-    return [trabajadores[0].nombre, '', '', trabajadores[1].nombre, '', '']
-  elif(len(trabajadores) == 1):
-    return [trabajadores[0].nombre, '', '', '', '', '']
-  else:
-    return ['', '', '', '', '', '']
+# def get_trabajadores_pdf(trabajadores):
+#   if(len(trabajadores) == 2):
+#     return [trabajadores[0].nombre, '', '', trabajadores[1].nombre, '', '']
+#   elif(len(trabajadores) == 1):
+#     return [trabajadores[0].nombre, '', '', '', '', '']
+#   else:
+#     return ['', '', '', '', '', '']
 
 
 
@@ -184,9 +188,7 @@ def get_pdf():
       trabajadores.append('')
       trabajadores.append('')
     else:
-      trabajadores.append(solicitud.trabajador[0:2])
-      trabajadores.append(solicitud.trabajador[2:4])
-      trabajadores.append(solicitud.trabajador[4:6])
+      trabajadores.append(solicitud.trabajador)
 
     styles = getSampleStyleSheet()
     text = Paragraph(solicitud.requerimiento,
@@ -196,7 +198,7 @@ def get_pdf():
 
     data = [['UNIVERSIDAD SIMÓN BOLÍVAR\nVICERRECTORADO ADMINISTRATIVO\nDIRECCIÓN DE PLANTA FÍSICA\nUnidad de Atención e Inspección', '' , 'SOLICITUD DE SERVICIO DE LA DIRECCIÓN PLANTA FÍSICA', '', '', ''],
             [''],
-            ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área de Trabajo: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
+            ['Fecha de Solicitud: ' + str(solicitud.fecha_realizacion), '', 'Área: ' + str(solicitud.area.nombre_area), '', 'Nº Codigo UAI: ' + str(solicitud.id), ''],
             [solicitud.tipo, '', '', 'Entregada a: ' + str(solicitud.supervisor), '', ''],
             ['Unidad Solicitante', '', 'Persona Contacto', '', 'Email de Contacto', ''],
             [solicitud.unidad.nombre_unidad, '', solicitud.nombre_contacto, '', solicitud.info_contacto, ''],
@@ -208,9 +210,9 @@ def get_pdf():
             ['Supervisor Responsable', '', 'Fecha de Inicio\n(Obligatorio)', '', 'Fecha de Culminacion\n(Obligatorio)', ''],
             [solicitud.supervisor, '', solicitud.fecha_inicio, '', solicitud.fecha_culminacion, ''],
             ['Trabajadores Asignados', '', '', '', '', ''],
-            get_trabajadores_pdf(trabajadores[0]),
-            get_trabajadores_pdf(trabajadores[1]),
-            get_trabajadores_pdf(trabajadores[2]),
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
+            ['', '', '', '', '', ''],
             [''],
             ['Observaciones', '', '', '', 'Trabajo Terminado', ''],
             [solicitud.observacion_ejecucion, '', '', '', '', 'Terminado'],
@@ -243,6 +245,7 @@ def get_pdf():
                            ('SPAN', (4,4), (5,4)),
                            ('SPAN', (0,5), (1,5)),#
                            ('FONTSIZE', (0,5), (1,5), 6),
+                           ('FONTSIZE', (2,2), (2,2), 7.75),
                            ('SPAN', (2,5), (3,5)),
                            ('SPAN', (4,5), (5,5)),
                            ('SPAN', (3,6), (5,6)),
